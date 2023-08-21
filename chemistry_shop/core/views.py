@@ -64,7 +64,7 @@ def sign_in(request):
 
 
 class CategoryList(DataMixin, ListView):
-    paginate_by = 3
+    paginate_by = 5
     model = Ingredient
     template_name = 'core/index.html'
     context_object_name = 'items'

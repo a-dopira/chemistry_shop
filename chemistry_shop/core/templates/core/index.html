@@ -1,10 +1,10 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<div>
+<div style="margin: 50px auto">
     <div class="list_ingredients">
         {% for item in items %}
-        <ul class="single_ingredient">
-
+        <div class="grid-item">
+            <ul class="single_ingredient">
             <li>
                 {% if item.photo %}
                 <img src="{{ item.photo.url }}" alt="{{ item.title }}">
@@ -15,22 +15,26 @@
 
             <li class="single_ingredient__content">
                 <ul style="min-height: 100px">
-                    <li >{{item.title}}</li>
-                    <li>{{item.content|linebreaks|truncatewords:15}}</li>
-                    <li>{{item.price}}$</li>
-                    <li>
-                        <button>
-                            <a href="{{ item.get_absolute_url }}">Read more</a>
-                        </button>
-                    </li>
+                    <li><i>{{item.title}}</i></li>
+                    <li style="font-size: 15px">{{item.content|linebreaks|truncatewords:15}}</li>
+                    <li><strong>{{item.price}}$</strong></li>
+
                 </ul>
             </li>
-
-        </ul>
+            </ul>
+            <div style="margin: 30px auto; display: flex">
+                <div style="margin: 0 auto">
+                <button>
+                    <a href="{{ item.get_absolute_url }}">Read more</a>
+                </button></div>
+            </div>
+        </div>
 
         {% endfor %}
-         <!-- Pagination -->
-        {% if page_obj.has_other_pages %}
+
+    </div>
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
         <nav class="list-pages">
             {% if paginator.count > 0 %}
                 <ul class="all-pages">
@@ -59,7 +63,6 @@
             {% endif %}
         </nav>
         {% endif %}
-    </div>
 </div>
 {% endblock %}
 
