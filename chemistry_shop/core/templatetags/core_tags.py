@@ -16,7 +16,7 @@ def show_categories(sort=None, cat_selected=0):
 @register.inclusion_tag('core/menu.html')
 def show_menu():
     menu = [
-        {'title': 'Home', 'url_name': 'home'},
+        {'title': 'Cart', 'url_name': 'cart_view'},
         {'title': 'About', 'url_name': 'about'},
         {'title': 'Contact', 'url_name': 'contact'},
         {'title': 'Products', 'url_name': 'home'},

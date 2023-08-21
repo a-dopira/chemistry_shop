@@ -1,21 +1,23 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<ul class="single_ingredient">
-    <li >
-        {% if prod.photo %}
-        <img src="{{ prod.photo.url }}" alt="{{ prod.title }}">
-        {% else %}
-        <img src="https://picsum.photos/id/237/200/300" alt="">
-        {% endif %}
-    </li>
-    <li class="single_ingredient__content">
-        <ul style="min-height: 100px">
-            <li >{{prod.title}}</li>
-            <li>{{prod.content|linebreaks}}</li>
-            <li style="background-color: black; color: white">
-                <a href="{% url 'add_to_cart' prod.pk %}">Add to cart</a>
-            </li>
-        </ul>
-    </li>
-</ul>
+<div class="single_ingredient">
+    <ul style="display: flex">
+        <li>
+            {% if prod.photo %}
+            <img src="{{ prod.photo.url }}" alt="{{ prod.title }}">
+            {% else %}
+            <img src="https://picsum.photos/id/237/200/300" alt="">
+            {% endif %}
+        </li>
+        <li class="single_ingredient__content">
+            <ul style="min-height: 100px">
+                <li >{{prod.title}}</li>
+                <li>{{prod.content|linebreaks}}</li>
+                <li style="background-color: black; color: white">
+                    <a href="{% url 'add_to_cart' prod.pk %}">Add to cart</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
 {% endblock %}

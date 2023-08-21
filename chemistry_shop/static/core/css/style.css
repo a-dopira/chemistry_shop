@@ -1,3 +1,8 @@
+body {
+    width: 80%;
+    margin: 0 auto;
+}
+
 a{
   text-decoration: none;
   color: inherit;
@@ -7,20 +12,36 @@ ul {
   list-style-type: none;
 }
 
+/* Navbar */
+
 .navbar{
   display: flex;
+    align-items: center;
   justify-content: space-between;
-  background-color: #000000;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  background-color: #dc944f;
   font-size: 20px;
+}
+
+.navbar ul {
+    align-items: center;
 }
 
 .logo{
   color: #ffffff;
-  font-size: 25px;
+  /*font-size: 25px;*/
   font-weight: bold;
+    margin-right: 20px;
 }
 .logo_header{
   display: flex;
+    width: 300px
+}
+
+
+.logo_header .registered_user {
+    display: flex;
 }
 
 .main_nav{
@@ -28,6 +49,8 @@ ul {
   float: right;
   justify-content: space-between;
   list-style: none;
+  width: 500px;
+    margin-right: 20px;
 }
 .main_nav li:hover{
   background-color: gray
@@ -42,6 +65,8 @@ ul {
   color: #ffffff;
 }
 
+/* Products */
+
 .main_ingredients {
   background-color: white;
   border: thick double black;
@@ -51,7 +76,7 @@ ul {
   display: flex;
   margin: 20px 0;
   justify-content: space-evenly;
-  max-height: 150px;
+  /*max-height: 150px;*/
   font-size: 20px;
 }
 
@@ -66,9 +91,9 @@ ul {
   object-fit: contain;
 }
 
-.single_ingredient li{
-  max-height: 150px;
-}
+/*.single_ingredient li{*/
+/*  max-height: 150px;*/
+/*}*/
 
 .list_ingredients {
   margin: auto;
