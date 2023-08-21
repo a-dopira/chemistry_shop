@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div style="margin: 50px 50px">
+    <div class="list_ingredients">
+        {% for item in items %}
+        <ul class="single_ingredient">
+
+            <li>
+                {% if item.photo %}
+                <img src="{{ item.photo.url }}" alt="{{ item.title }}">
+                {% else %}
+                <img src="https://picsum.photos/id/237/200/300" alt="">
+                {% endif %}
+            </li>
+
+            <li class="single_ingredient__content">
+                <ul style="max-height: 100px">
+                    <li >{{item.title}}</li>
+                    <li>{{item.content|linebreaks|truncatewords:15}}</li>
+                    <li>
+                        <button>
+                            <a href="{{ item.get_absolute_url }}">Read more</a>
+                        </button>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+
+        {% endfor %}
+         <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <nav class="list-pages">
+            {% if paginator.count > 0 %}
+                <ul class="all-pages">
+                    {% if page_obj.has_previous %}
+                        <li class="page-num">
+                            <a href="?page={{ page_obj.previous_page_number }}"><</a>
+                    {% endif %}</li>
+
+                {% for p in paginator.page_range %}
+                    {% if page_obj.number == p %}
+                        <li class="page-num page-num-selected">{{ p }}</li>
+                    {% elif p >= page_obj.number|add:-1 and p <= page_obj.number|add:1  %}
+                        <li class="page-num">
+                            <a href="?page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-num">
+                        <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+                    </li>
+                {% endif %}
+
+                </ul>
+            {% endif %}
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

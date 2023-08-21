@@ -1,0 +1,64 @@
+{% load static %}
+{% load core_tags %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" href="{% static 'core/css/style.css' %}" rel="stylesheet">
+    <link rel="icon" href="{% static 'core/images/favicon-32x32.png' %}">
+    <title>
+        {% if title %}
+            {{title}}
+        {% else %}
+            Extraordinary cosmetics
+        {% endif %}
+    </title>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo_header" style="color: white">
+            <ul style="display: flex">
+                <li style="width: 150px">
+                    <a href="{% url 'home' %}" class="logo">
+                        The Hag's Cure
+<!--                        <img src="{% static 'core/images/favicon-32x32.png' %}" alt="company_logo">-->
+                    </a>
+                </li>
+                {% if request.user.is_authenticated %}
+                <li style="display: flex">
+                    <a style="margin-right: 25px">{{user.username}}</a> |
+                    <a style="margin-left: 25px" href="{% url 'logout' %}"> Logout</a>
+                </li>
+                {% else %}
+                 <li style="display: flex">
+                    <a style="margin-right: 50px"href="{% url 'register' %}">Registration</a> |
+                    <a style="margin-left: 50px" href="{% url 'login' %}"> Login</a>
+                 </li>
+                {% endif %}
+            </ul>
+        </div>
+            {% show_menu %}
+    </nav>
+    <div class="main_ingredients" style="display: flex">
+        <div style="margin: 0 auto; display: flex">
+            <div>
+                {% show_categories cat_selected=cat_selected %}
+            </div>
+            <div style="width: 100px; border: black solid 1px; background-color: white">
+                <form method="get" action="/search/" style="display: flex">
+                    <input style="width: 50px" name="single_product" type="text" placeholder="Search..."/>
+                    <button>Search</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+        {% block content %}
+        {% endblock %}
+    <footer>
+        {% show_footer %}
+    </footer>
+</body>
+</html>
