@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<div class="single_ingredient">
-    <ul style="display: flex">
+<div class="grid-item" style="margin-top: 50px">
+    <ul class="single_ingredient" style="margin-top: 40px; width: 700px">
         <li>
             {% if prod.photo %}
             <img src="{{ prod.photo.url }}" alt="{{ prod.title }}">
@@ -9,10 +9,11 @@
             <img src="https://picsum.photos/id/237/200/300" alt="">
             {% endif %}
         </li>
-        <li class="single_ingredient__content">
-            <ul style="min-height: 100px">
-                <li >{{prod.title}}</li>
+        <li>
+            <ul>
+                <li ><i>{{prod.title}}</i></li>
                 <li>{{prod.content|linebreaks}}</li>
+                <li>{{prod.price}}$</li>
                 <li style="background-color: black; color: white">
                     <a href="{% url 'add_to_cart' prod.pk %}">Add to cart</a>
                 </li>

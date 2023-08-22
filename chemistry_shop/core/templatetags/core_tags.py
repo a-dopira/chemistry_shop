@@ -19,7 +19,6 @@ def show_menu():
         {'title': 'Cart', 'url_name': 'cart_view'},
         {'title': 'About', 'url_name': 'about'},
         {'title': 'Contact', 'url_name': 'contact'},
-        {'title': 'Products', 'url_name': 'home'},
     ]
     return {"menu": menu}
 

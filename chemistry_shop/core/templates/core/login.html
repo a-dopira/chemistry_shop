@@ -1,19 +1,25 @@
 {% extends 'core/base.html' %}
 
 {% block content %}
-<h1>{{title}}</h1>
+<div class="form-setup">
+    <div style="text-align: center">
+        <h1>{{title}}</h1>
+    </div>
+    <div>
+        <form method="post">
+        {% csrf_token %}
 
-<form method="post">
-    {% csrf_token %}
+        <div class="form-error">{{ form.non_field_errors }}</div>
 
-<div class="form-error">{{ form.non_field_errors }}</div>
-
-{% for f in form %}
-<p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-<div class="form-error">{{ f.errors }}</div>
-{% endfor %}
-
-    <button type="submit">Войти</button>
-</form>
+        {% for f in form %}
+        <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+        <div class="form-error">{{ f.errors }}</div>
+        {% endfor %}
+        <div style="display: flex">
+            <button type="submit" class="login-button" style="margin: 0 auto;">Login</button>
+        </div>
+        </form>
+    </div>
+</div>
 
 {% endblock %}
