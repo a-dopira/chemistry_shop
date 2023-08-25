@@ -49,19 +49,19 @@ class Cart(object):
         if prod_id in self.cart:
             del self.cart[prod_id]
             self.save()
-    #
-    # def clear(self):
-    #     del self.session[settings.CART_SESSION_ID]
-    #     self.session.modified = True
-    #
+
+    def clear(self):
+        del self.session[settings.CART_SESSION_ID]
+        self.session.modified = True
+
     def get_total_cost(self):
         for p in self.cart.keys():
             self.cart[str(p)]['product'] = Ingredient.objects.get(pk=p)
 
         return float(sum(item['product'].price * item['quantity'] for item in self.cart.values()))
-    #
-    # def get_item(self, product_id):
-    #     if str(product_id) in self.cart:
-    #         return self.cart[str(product_id)]
-    #     else:
-    #         return None
+
+    def get_item(self, product_id):
+        if str(product_id) in self.cart:
+            return self.cart[str(product_id)]
+        else:
+            return None

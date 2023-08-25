@@ -1,4 +1,25 @@
 {% extends 'core/base.html' %}
+{% load static %}
+{% block title %}{{ title }} | The Hag's Cure{% endblock %}
 {% block content %}
-    <h1>Contacts page</h1>
+<div class="contacts_view">
+    <div style="margin: auto 0">
+        <div style="text-align: center">
+            <h1>Contacts</h1>
+        </div>
+        <div style="text-align: center">
+            <div>
+                <i>We are in social media</i>
+            </div>
+            {% for social in social_media %}
+            <div style="display: flex; align-items: center; margin-top: 20px">
+                <img src="{% static 'core/icons/icons8-'|add:social.0|add:'.svg' %}" alt="{{ social.0 }}">
+                <div style="display: inline-block; margin: auto 0">
+                    <a href="{{ social.1 }}" target=”_blank”>{{ social.0|capfirst }}</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

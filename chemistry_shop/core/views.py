@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
-from .forms import SignInForm
+from .forms import SignInForm, OrderForm, RegisterUserForm
 from .models import *
 from .utils import *
 from .cart import Cart
@@ -16,14 +16,14 @@ from .cart import Cart
 
 class IngredientsList(DataMixin, ListView):
 
-    paginate_by = 3
+    paginate_by = 6
     model = Ingredient
     template_name = 'core/index.html'
     context_object_name = 'items'
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Front page')
+        c_def = self.get_user_context(title='The Hag\'s Cure')
         return context | c_def
 
 
@@ -48,10 +48,19 @@ class SingleProduct(DataMixin, DetailView):
         )
         return context | c_def
 
+@login_required(login_url='login')
+def my_account(request):
+    return render(request, 'core/user_profile.html', {'title': request.user.username})
 
 def contacts(request):
     context = {
-        'title': 'Information page'
+        'title': 'Contacts',
+        'social_media': [
+            ('instagram', 'https://www.instagram.com/dizainmebli/'),
+            ('facebook', 'https://www.facebook.com/a.dopira.u/'),
+            ('github', 'https://github.com/a-dopira'),
+            ('linkedIn', 'https://www.linkedin.com/in/anton-dopira-15b8b9210/')
+        ]
     }
     return render(request, 'core/contacts.html', context=context)
 
@@ -82,9 +91,9 @@ class CategoryList(DataMixin, ListView):
         return Ingredient.objects.filter(cat__slug=self.kwargs['cat_slug']).select_related('cat')
 
 class RegistrationPage(DataMixin, CreateView):
-    form_class = UserCreationForm
+    form_class = RegisterUserForm
     template_name = 'core/register.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('user_account')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -122,17 +131,20 @@ def logout_user(request):
 
 # Cart itself
 
+
 def add_to_cart(request, prod_id):
     cart = Cart(request)
     cart.add(prod_id)
 
     return redirect('cart_view')
 
+
 def remove_from_cart(request, prod_id):
     cart = Cart(request)
     cart.remove(str(prod_id))
 
     return redirect('cart_view')
+
 
 def change_quantity(request, prod_id):
     action = request.GET.get('action', '')
@@ -153,14 +165,44 @@ def change_quantity(request, prod_id):
 def checkout(request):
     cart = Cart(request)
 
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            total_price = 0
+
+            for item in cart:
+                product = item['product']
+                total_price += product.price * int(item['quantity'])
+
+            order = form.save(commit=False)
+            order.created_by = request.user
+            order.paid_amount = total_price
+            order.save()
+
+            for item in cart:
+                product = item['product']
+                quantity = int(item['quantity'])
+                price = product.price * quantity
+
+                item = OrderItem.objects.create(order=order, product=product, price=price, quantity=quantity)
+
+            cart.clear()
+
+            return redirect('user_account')
+    else:
+        form = OrderForm()
+
     return render(request, 'core/checkout.html', {
-        'cart': cart
+        'title': 'Checkout',
+        'cart': cart,
+        'form': form,
     })
 
 def cart_view(request):
     cart = Cart(request)
 
     return render(request, 'core/cart_view.html', {
+        'title': 'Cart',
         'cart': cart
     })
 

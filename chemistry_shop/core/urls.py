@@ -7,6 +7,7 @@ urlpatterns = [
     path('about/', about, name='about'),
     path('contact/', contacts, name='contact'),
     path('login/', SignInPage.as_view(), name='login'),
+    path('account/', my_account, name='user_account'),
     path('registration/', RegistrationPage.as_view(), name='register'),
     path('logout/', logout_user, name='logout'),
     path('category/<slug:cat_slug>/', CategoryList.as_view(), name='category'),

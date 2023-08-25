@@ -16,7 +16,6 @@ def show_categories(sort=None, cat_selected=0):
 @register.inclusion_tag('core/menu.html')
 def show_menu():
     menu = [
-        {'title': 'Cart', 'url_name': 'cart_view'},
         {'title': 'About', 'url_name': 'about'},
         {'title': 'Contact', 'url_name': 'contact'},
     ]
@@ -31,3 +30,5 @@ def show_footer():
         {'title': 'Contact', 'url_name': 'contact'}
     ]
     return {"footer": footer}
+
+

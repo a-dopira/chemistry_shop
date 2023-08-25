@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.cart'
             ],
         },
     },
@@ -84,7 +85,7 @@ WSGI_APPLICATION = 'chemistry_shop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'test_db',
+        'NAME': 'chemistry_shop',
         'USER': 'postgres',
         'PASSWORD': '785432910',
         'HOST': '127.0.0.1',
