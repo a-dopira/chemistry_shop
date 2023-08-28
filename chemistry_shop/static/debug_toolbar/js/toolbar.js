@@ -286,9 +286,9 @@ const djdt = {
                 // when the header can't be fetched. While it doesn't impede execution
                 // it's worrisome to developers.
                 if (
-                    this.getAllResponseHeaders().indexOf("djdt-store-id") >= 0
+                    this.getAllResponseHeaders().indexOf("djdt-core-id") >= 0
                 ) {
-                    handleAjaxResponse(this.getResponseHeader("djdt-store-id"));
+                    handleAjaxResponse(this.getResponseHeader("djdt-core-id"));
                 }
             });
             origOpen.apply(this, arguments);
@@ -298,8 +298,8 @@ const djdt = {
         window.fetch = function () {
             const promise = origFetch.apply(this, arguments);
             promise.then(function (response) {
-                if (response.headers.get("djdt-store-id") !== null) {
-                    handleAjaxResponse(response.headers.get("djdt-store-id"));
+                if (response.headers.get("djdt-core-id") !== null) {
+                    handleAjaxResponse(response.headers.get("djdt-core-id"));
                 }
                 // Don't resolve the response via .json(). Instead
                 // continue to return it to allow the caller to consume as needed.

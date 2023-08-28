@@ -25,14 +25,14 @@ function refreshHistory() {
     const formTarget = djDebug.querySelector(".refreshHistory");
     const container = document.getElementById("djdtHistoryRequests");
     const oldIds = new Set(
-        pluckData(container.querySelectorAll("tr[data-store-id]"), "storeId")
+        pluckData(container.querySelectorAll("tr[data-core-id]"), "storeId")
     );
 
     ajaxForm(formTarget)
         .then(function (data) {
             // Remove existing rows first then re-populate with new data
             container
-                .querySelectorAll("tr[data-store-id]")
+                .querySelectorAll("tr[data-core-id]")
                 .forEach(function (node) {
                     node.remove();
                 });
@@ -43,7 +43,7 @@ function refreshHistory() {
         .then(function () {
             const allIds = new Set(
                 pluckData(
-                    container.querySelectorAll("tr[data-store-id]"),
+                    container.querySelectorAll("tr[data-core-id]"),
                     "storeId"
                 )
             );
@@ -64,7 +64,7 @@ function refreshHistory() {
             });
             setTimeout(() => {
                 container
-                    .querySelectorAll("tr[data-store-id]")
+                    .querySelectorAll("tr[data-core-id]")
                     .forEach((row) => {
                         row.classList.remove("flash-new");
                     });
@@ -74,7 +74,7 @@ function refreshHistory() {
 
 function switchHistory(newStoreId) {
     const formTarget = djDebug.querySelector(
-        ".switchHistory[data-store-id='" + newStoreId + "']"
+        ".switchHistory[data-core-id='" + newStoreId + "']"
     );
     const tbody = formTarget.closest("tbody");
 
@@ -88,7 +88,7 @@ function switchHistory(newStoreId) {
         if (Object.keys(data).length === 0) {
             const container = document.getElementById("djdtHistoryRequests");
             container.querySelector(
-                'button[data-store-id="' + newStoreId + '"]'
+                'button[data-core-id="' + newStoreId + '"]'
             ).innerHTML = "Switch [EXPIRED]";
         }
         replaceToolbarState(newStoreId, data);

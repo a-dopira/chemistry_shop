@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                 ('time_create', models.DateTimeField(auto_now_add=True)),
                 ('time_update', models.DateTimeField(auto_now=True)),
                 ('is_published', models.BooleanField(default=True)),
-                ('cat', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='core.category')),
+                ('cat', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='store.category')),
             ],
             options={
                 'verbose_name': 'Ingredient',
@@ -70,8 +70,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('price', models.DecimalField(decimal_places=2, max_digits=7)),
                 ('quantity', models.IntegerField(default=1)),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='core.order')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='core.ingredient')),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='store.order')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='store.ingredient')),
             ],
         ),
     ]
