@@ -1,8 +1,69 @@
 {% extends 'core/base.html' %}
 {% block title %}{{ title }} | The Hag's Cure{% endblock %}
 {% block content %}
-<div>
-    <h1>My Profile</h1>
+<div class="user_profile">
+    <div>
+        <h1>My Profile</h1>
+    {% for order in orders %}
+    <ul class="user_profile__order">
+        <li style="font-size: 20px">
+            <b>Order from: {{ order.created_at|date:"Y-m-d" }}</b>
+        </li>
+        <li>
+            Total price: {{ order.paid_amount }}$
+        </li>
+        <li>
+            Status:
+            {% if order.is_paid %}
+                <span style="color: #006b1b">done</span>
+            {% else %}
+                <span style="color: #94b24d">pending</span>
+            {% endif %}
+        </li>
+        <li>
+            <div>Order containment:</div>
+            <div style="display: flex">
+                {% for item in items %}
+                    {% for prod in item %}
+                        {% if order.pk == prod.order.pk %}
+                            <div> {{ prod.product.title }}: {{ prod.quantity }}x{{ prod.product.quantity }} </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </li>
+    </ul>
+    {% endfor %}
+    </div>
+    {% if page_obj.has_other_pages %}
+        <nav class="list-pages">
+            {% if paginator.count > 0 %}
+                <ul class="all-pages">
+                    {% if page_obj.has_previous %}
+                        <li class="page-num">
+                            <a href="?page={{ page_obj.previous_page_number }}"><</a>
+                    {% endif %}</li>
+
+                {% for p in paginator.page_range %}
+                    {% if page_obj.number == p %}
+                        <li class="page-num page-num-selected">{{ p }}</li>
+                    {% elif p >= page_obj.number|add:-1 and p <= page_obj.number|add:1  %}
+                        <li class="page-num">
+                            <a href="?page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-num">
+                        <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+                    </li>
+                {% endif %}
+
+                </ul>
+            {% endif %}
+        </nav>
+        {% endif %}
     <button class="login-button"><a href="{% url 'logout' %}">Logout</a></button>
 </div>
 {% endblock %}

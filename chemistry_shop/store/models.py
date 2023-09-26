@@ -52,10 +52,13 @@ class Order(models.Model):
     created_by = models.ForeignKey(User, related_name='orders', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['id']
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    product = models.ForeignKey(Ingredient, related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey(Ingredient, related_name='products', on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=7, decimal_places=2)
     quantity = models.IntegerField(default=1)
 

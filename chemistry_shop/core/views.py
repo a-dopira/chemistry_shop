@@ -35,4 +35,4 @@ def contacts(request):
             ('linkedIn', 'https://www.linkedin.com/in/anton-dopira-15b8b9210/')
         ]
     }
-    return render(request, 'store/contacts.html', context=context)
+    return render(request, 'core/contacts.html', context=context)

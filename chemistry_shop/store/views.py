@@ -27,7 +27,6 @@ class SingleProduct(DataMixin, DetailView):
 
 class CategoryList(DataMixin, ListView):
     paginate_by = 5
-    model = Ingredient
     template_name = 'core/home.html'
     context_object_name = 'items'
 
@@ -53,9 +52,6 @@ class FormSearch(ListView):
         query = self.request.GET.get('single_product', '')
         products = Ingredient.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
         return products
-
-
-
 
 # Cart itself
 

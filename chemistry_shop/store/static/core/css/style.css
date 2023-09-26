@@ -430,3 +430,26 @@ footer table a:hover {
 .list-pages .page-num-selected:hover {
 	box-shadow: none;
 }
+
+/* user profile */
+
+.user_profile {
+    margin: 50px auto;
+    padding: 20px 30px;
+    min-width: 80%;
+    border: 5px solid #dc944f;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.user_profile__order {
+    margin: 20px auto;
+    padding: 10px;
+    border: 5px solid #dc944f;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.user_profile__order li{
+    margin: 10px auto;
+}

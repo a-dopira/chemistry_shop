@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                 ('price', models.DecimalField(decimal_places=2, max_digits=7)),
                 ('quantity', models.IntegerField(default=1)),
                 ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='store.order')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='store.ingredient')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='products', to='store.ingredient')),
             ],
         ),
     ]
