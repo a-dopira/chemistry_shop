@@ -1,38 +1,33 @@
 from django.contrib.auth import logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 
 from store.forms import RegisterUserForm, SignInForm
-from store.models import Order, OrderItem
+from store.models import Order
 from store.utils import DataMixin
 
 
 class MyAccount(LoginRequiredMixin, ListView):
-    template_name = 'userprofile/user_profile.html'
-    paginate_by = 5
     model = Order
-    # context_object_name = 'orders'
+    template_name = 'userprofile/user_profile.html'
+    paginate_by = 3
+    context_object_name = 'orders'
 
     def get_queryset(self):
         user = self.request.user
         return Order.objects.filter(created_by=user).prefetch_related('items')
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         orders = self.get_queryset()
-        context['title'] = self.request.user.username
+        items = [order.items.all().select_related('product') for order in orders]
 
-        items = []
-        for order in orders:
-            everything = order.items.all().select_related('product')
-            items.append(everything)
-
-        context['orders'] = orders
         context['items'] = items
+        context['title'] = self.request.user.username
 
         return context
 

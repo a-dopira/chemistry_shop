@@ -49,9 +49,15 @@ class FormSearch(ListView):
     context_object_name = 'products'
 
     def get_queryset(self):
-        query = self.request.GET.get('single_product', '')
+        query = self.request.GET.get('awesome_product', '')
         products = Ingredient.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
         return products
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('awesome_product', '')
+        context['title'] = f"Search results for '{query}'"
+        return context
 
 # Cart itself
 
@@ -122,6 +128,7 @@ def checkout(request):
         'form': form,
     })
 
+
 def cart_view(request):
     cart = Cart(request)
 
@@ -131,4 +138,4 @@ def cart_view(request):
     })
 
 def page_not_found(request, exception):
-    return HttpResponseNotFound('<h1>Page not found, motherfucker</h1>')
+    return HttpResponseNotFound('<h1>Page not found</h1>')
