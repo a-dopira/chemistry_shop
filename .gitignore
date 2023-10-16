@@ -1,6 +1,7 @@
 venv
 .idea
 /chemistry_shop/static/
+/chemistry_shop/essential.py
 __pycache__/
 *.py[cod]
 *$py.class
