@@ -1,8 +1,8 @@
 from chemistry_shop import settings
-from .models import Ingredient
+from store.models import Ingredient
 
 
-class Cart(object):
+class Cart:
 
     def __init__(self, request):
         self.session = request.session
@@ -22,7 +22,6 @@ class Cart(object):
             item['total_price'] = float(item['product'].price * item['quantity'])
 
             yield item
-
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
@@ -63,5 +62,5 @@ class Cart(object):
     def get_item(self, product_id):
         if str(product_id) in self.cart:
             return self.cart[str(product_id)]
-        else:
-            return None
+
+        return None

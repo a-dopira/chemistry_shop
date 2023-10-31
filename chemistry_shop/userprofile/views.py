@@ -12,8 +12,8 @@ from store.utils import DataMixin
 
 class MyAccount(LoginRequiredMixin, ListView):
     model = Order
-    template_name = 'userprofile/user_profile.html'
     paginate_by = 3
+    template_name = 'userprofile/user_profile.html'
     context_object_name = 'orders'
 
     def get_queryset(self):
@@ -24,17 +24,16 @@ class MyAccount(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         orders = self.get_queryset()
-        items = [order.items.all().select_related('product') for order in orders]
+        items = [order.items.filter(id=order.id).select_related('product') for order in orders]
 
-        context['items'] = items
-        context['title'] = self.request.user.username
+        c_def = {
+            'items': items,
+            'title': self.request.user.username + "| The Hag's Cure",
+            'name': self.request.user.username,
+            'email': self.request.user.email,
+        }
 
-        return context
-
-
-def logout_user(request):
-    logout(request)
-    return redirect('home')
+        return context | c_def
 
 
 class RegistrationPage(DataMixin, CreateView):
@@ -59,3 +58,9 @@ class SignInPage(DataMixin, LoginView):
 
     def get_success_url(self):
         return reverse_lazy('home')
+
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('home')

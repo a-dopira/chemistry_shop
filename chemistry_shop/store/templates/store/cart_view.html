@@ -1,5 +1,4 @@
 {% extends 'core/base.html' %}
-{% block title %}{{ title }} | The Hag's Cure{% endblock %}
 {% block content %}
 <div class="cart-view">
     <div style="text-align: center">
@@ -29,9 +28,7 @@
     </div>
     <div>
         <p>Total cost: {{ cart.get_total_cost }} $</p>
-        <div class="checkout-button">
-            <a href="{% url 'checkout' %}" style="display: block; text-align: center">Checkout</a>
-        </div>
+        <button class="button-1" role="button"><a href="{% url 'checkout' %}" style="display: block; text-align: center">Checkout</a></button>
     </div>
     {% else %}
     <div style="text-align: center">

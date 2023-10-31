@@ -20,7 +20,9 @@ class IngredientsList(DataMixin, ListView):
 
 def about(request):
     context = {
-        'title': 'Information page'
+        'title': "Information page | The Hag's cure",
+        'text': 'We supply 1,000+ ingredients of the highest quality packaged in convenient retail sizes but also '
+                'large bulk sizes at discount rates. We are ISO certified, FDA registered, and USDA organic certified.'
     }
     return render(request, 'core/about.html', context=context)
 
