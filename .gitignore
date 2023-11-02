@@ -1,8 +1,0 @@
-venv
-.idea
-.env
-/chemistry_shop/static/
-__pycache__/
-*.py[cod]
-*$py.class
-.gitignore
