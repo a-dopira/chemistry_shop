@@ -1,0 +1,9 @@
+{% for product in products %}
+    {% include 'core/partials/product_card.html' %}
+{% endfor %}
+
+{% load core_tags %}
+<div hx-swap-oob="true" id="smart-pagination">
+    {% show_hybrid_pagination page_obj "products-container" %}
+</div>
+

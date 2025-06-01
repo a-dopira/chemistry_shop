@@ -1,0 +1,17 @@
+<div class="product-card">
+    <div class="product-card__image">
+        {% if product.photo %}
+        <img src="{{ product.photo.url }}" alt="{{ product.title }}" class="card-image">
+        {% else %}
+        <img src="https://picsum.photos/id/237/200/300" alt="{{ product.title }}" class="card-image">
+        {% endif %}
+    </div>
+    
+    <div class="product-card__content">
+        <h3 class="product-card__title">{{ product.title }}</h3>
+        <div class="product-card__price">${{ product.price }}</div>
+        <a href="{{ product.get_absolute_url }}" class="product-card__button">
+            SELECT OPTIONS
+        </a>
+    </div>
+</div>

@@ -1,0 +1,136 @@
+{% load static %} 
+{% load core_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="htmx-config" content='{"defaultScrollBehavior":"ignore"}' />
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link
+      type="text/css"
+      href="{% static 'store/css/style.css' %}"
+      rel="stylesheet"
+    />
+    <link rel="icon" href="{% static 'store/images/favicon-32x32.png' %}" />
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <nav class="navbar">
+        <ul>
+        <!-- logo -->
+        <li>
+          <a href="{% url 'home' %}" class="logo"> The Hag's Cure </a>
+        </li>
+
+        {% if request.user.is_authenticated %}
+          <li>
+            <a href="{% url 'user_account' %}"
+              >{{user.username}}</a
+            >
+            |
+            <a href="{% url 'logout' %}"> Logout</a>
+          </li>
+          {% else %}
+          <li>
+            <a href="{% url 'register' %}"
+              >Registration</a
+            >
+            |
+            <a href="{% url 'login' %}"> Login</a>
+          </li>
+          {% endif %}
+        <li>
+          <form
+            method="get"
+            class="form_search"
+            action="{% url 'search_results' %}"
+            hx-get="{% url 'search_results' %}"
+            hx-target="#search-results"
+            hx-trigger="input changed delay:500ms from:input[name='search']"
+            hx-include="[name='search']"
+          >
+            <input
+              id="search-input"
+              name="search"
+              type="text"
+              placeholder="Search..."
+              autocomplete="off"
+              value="{{ request.GET.search|default:'' }}"
+            />
+            <button type="submit">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="20px"
+                width="30"
+                height="30"
+                viewBox="0 -2 50 50"
+                style="fill: #ffffff"
+              >
+                <path
+                  d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z"
+                ></path>
+              </svg>
+            </button>
+            
+            <div
+              id="search-results"
+              class="search-results"
+              style="display: none;"
+            >
+            </div>
+          </form>
+        </li>
+
+        <li>
+          <ul class="main_nav">
+            <li class="navbar-actions">
+              <a
+                href="{% url 'cart_view' %}"
+                class="nav_links"
+              >
+                <img
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACd0lEQVR4nO2YP0scQRjG71TOQiF2Eoh1PPS0EjyChx/A+waCtir4DSxtImprUlyv6Dc4IuRPk2CEQAoLC4u7RBEFGxHRRwafgXHZWW92Z8Ylmae5u9n33uf9zczOzG6hEBQUFBQU5EgAviE/+poFJFcqBJB/aES+ID/6nBokKI8CsMmhPQNQibleBvAnMg1sx27YAJnXmWoKcxE7ZwNkPMFw2KC4LLFjNkBKAG6YsMq2ijTm9zNdYRliq7wuvEuZQZj0J5NOKcOuFqD2oNqeOhZAjTEHViBo0mDSrUiPRnvzd0Lvm8Zu8XvDJsiyZm5HC+zSFJYmVmrZJogcZp1E73Yztpu/bcQK1WyCvAJwD/8jci+8rYHQ8JjJ7zzcI3f8PLYKQbM9Jl+NWYnUDSxuhTKNXeP1XRcgK0y+7nofwaOH0IoLkDqTf/JwRNln+4wLkCEmvwRQdHVEAVAEcMH2N9ZBaHJOg7rDqVVn+7kTCBo1aXIbU4AsMK7dJPaW15ouQdYSelNMnV+a1ck0Vui9S5BZ+NsQZ12CjMLfEWXUJUgPgOuI4ak0NRyRotI5Iocq4dHjDITGPzQQ5ci8jy63KsRbAIfKf0VsS4n97hSCph9p9hfASIojimhrKx2hwrXY/sEHyKL6wGO4j4zETCN1VBtsW/IBMkmzw2du1ujOXomBeLIA4DGn0DsfIH08ZouXAr0JR49OjyjyGV2+5BC5+52DsKgjFjHd4bNHJ88o02w78gJB0x3D44jJsWXbJ8hCxt5PilvyCdIP4OSZGztxQ9TEtQEMeANRipDPDTZ0BWDCK4QCM8gXaXKDS6M2N9nXLwIRFPSf6AGKjbVIWj61EAAAAABJRU5ErkJggg=="
+                  alt="cart"
+                />
+                <p id="cart-count">({{ cart|length }})</p>
+              </a>
+            </li>
+            {% show_menu %}
+          </ul>
+        </li>
+        
+    </ul>
+      </nav>
+
+      <div class="categories">
+        {% show_categories cat_selected=cat_selected %}
+      </div>
+
+      <div class="content">{% block content %} {% endblock %}</div>
+
+      <footer>{% show_footer %}</footer>
+    </div>
+
+    <script>
+
+      document.addEventListener("click", function (e) {
+        const searchResults = document.getElementById("search-results");
+        const searchForm = document.querySelector(".form_search");
+        if (!searchForm.contains(e.target)) {
+          searchResults.style.display = "none";
+        }
+      });
+
+      document.body.addEventListener("htmx:afterSwap", function (evt) {
+        if (evt.target.id === "search-results") {
+          const results = evt.target;
+          results.style.display = results.innerHTML.trim() ? "block" : "none";
+        }
+      });
+    </script>
+  </body>
+</html>

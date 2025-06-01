@@ -1,0 +1,73 @@
+<div id="smart-pagination" class="smart-pagination">
+    {% if page_obj.has_next %}
+    <div style="text-align: center;">
+        <button 
+            class="load-more-btn"
+            hx-get="?page={{ page_obj.next_page_number }}&load_more=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+            hx-target="#products-container .list_ingredients"
+            hx-swap="beforeend"
+            hx-select=".product-card"
+        >
+            load more
+        </button>
+    </div>
+    {% else %}
+    <div style="height: 62px"></div>
+    {% endif %}
+
+    {% if page_obj.has_other_pages %}
+    <nav style="text-align: center;">
+        <div style="display: inline-flex; gap: 5px; align-items: center; justify-content: center; min-width: 200px;">
+            {% if page_obj.has_previous %}
+            <a
+                class="page-num"
+                href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                hx-get="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                hx-target="#{{ target_id }}"
+                hx-swap="outerHTML"
+            >←</a>
+            {% endif %}
+
+            {% with current=page_obj.number total=paginator.num_pages %}
+                
+                {% if current > 1 %}
+                    <a
+                        class="page-num"
+                        href="?page={{ current|add:-1 }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                        hx-get="?page={{ current|add:-1 }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                        hx-target="#{{ target_id }}"
+                        hx-swap="outerHTML"
+                    >{{ current|add:-1 }}</a>
+                {% else %}
+                    <span class="page-num" style="visibility: hidden;">-</span>
+                {% endif %}
+
+                <span class="page-num-selected">{{ current }}</span>
+
+                {% if current < total %}
+                    <a
+                        class="page-num"
+                        href="?page={{ current|add:1 }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                        hx-get="?page={{ current|add:1 }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                        hx-target="#{{ target_id }}"
+                        hx-swap="outerHTML"
+                    >{{ current|add:1 }}</a>
+                {% else %}
+                    <span class="page-num" style="visibility: hidden;">-</span>
+                {% endif %}
+
+            {% endwith %}
+
+            {% if page_obj.has_next %}
+            <a
+                class="page-num"
+                href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                hx-get="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
+                hx-target="#{{ target_id }}"
+                hx-swap="outerHTML"
+            >→</a>
+            {% endif %}
+        </div>
+    </nav>
+    {% endif %}
+</div>

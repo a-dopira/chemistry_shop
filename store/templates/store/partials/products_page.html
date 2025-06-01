@@ -1,0 +1,46 @@
+{% load core_tags %}
+<div id="products-container" 
+    {% if not products %}
+        style="min-height: 50vh; display: flex; align-items: center; justify-content: center;"
+    {% endif %}
+>
+    <div>
+
+        <!-- for search form -->
+        {% if is_search and query %}
+        <div class="search-info" style="margin-bottom: 20px; text-align: left;">
+            <h2 style="margin-top: 0px; margin-bottom: 0px">Search results for "{{ query }}"</h2>
+            {% if products %}
+                <p style="margin-top: 0px; margin-bottom: 0px">Found {{ page_obj.paginator.count }} result{{ page_obj.paginator.count|pluralize }}</p>
+            {% else %}
+                <p>No ingredients found for "{{ query }}"</p>
+                <a href="{% url 'home' %}"><i>Browse all ingredients</i></a>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <!-- for category pick -->
+        {% if category %}
+        <div class="category-info" style="margin-bottom: 20px; text-align: left;">
+            <h2 style="margin-top: 0px; margin-bottom: 0px">{{ category.name }}</h2>
+            {% if products %}
+                <p style="margin-top: 0px; margin-bottom: 0px">{{ page_obj.paginator.count }} ingredient{{ page_obj.paginator.count|pluralize }}</p>
+            {% else %}
+                <p style="margin-top: 0px; margin-bottom: 5px">No ingredients in this category yet</p>
+                <a href="{% url 'home' %}"><i>Browse all ingredients</i></a>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <!-- casual display -->
+        {% if products %}
+        <div class="list_ingredients">
+            {% for product in products %}
+                {% include 'core/partials/product_card.html' %}
+            {% endfor %}
+        </div>
+        
+        {% show_hybrid_pagination page_obj "products-container" %}
+        {% endif %}
+    </div>
+</div>

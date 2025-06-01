@@ -1,0 +1,106 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="product-container">
+    <div class="product-main-section">
+        <div class="product-image-section">
+            {% if prod.photo %}
+                <img src="{{ prod.photo.url }}" alt="{{ prod.title }}" class="product-image">
+            {% else %}
+                <img src="https://picsum.photos/400/400?random={{ prod.id }}" alt="{{ prod.title }}" class="product-image">
+            {% endif %}
+        </div>
+
+        <div class="product-info-section">
+            <a href='{{ prod.cat.get_absolute_url }}' class="product-category">{{ prod.cat.name }}</a>
+            
+            <h1 class="product-title">{{ prod.title }}</h1>
+            
+            <div class="product-details">
+                <div class="product-amount">{{ prod.amount }} {{ prod.unit }}</div>
+                
+                <div class="product-price">${{ prod.price }}</div>
+                
+                {% if prod.is_in_stock %}
+                <div class="quantity-selector">
+                    <label class="quantity-label">Quantity:</label>
+                    <select class="quantity-select" id="quantity" name="quantity" form="cart-form">
+                        {% for i in quantity_range %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="stock-info">{{ prod.quantity }} in stock</span>
+                </div>
+                {% else %}
+                <div class="out-of-stock">
+                    <span class="stock-warning">Out of Stock</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="add-to-cart-section">
+                {% if prod.is_in_stock %}
+                <form method="post" action="{% url 'add_to_cart' prod.id %}" id="cart-form">
+                    {% csrf_token %}
+                    <button 
+                        hx-post="{% url 'add_to_cart' prod.id %}"
+                        hx-target="#cart-count"
+                        hx-swap="innerHTML"
+                        hx-indicator="#cart-loading"
+                        hx-include="[name='csrfmiddlewaretoken'], [name='quantity']"
+                        class="add-to-cart-btn"
+                        type="submit"
+                    >
+                        <svg class="cart-icon" viewBox="0 0 24 24">
+                            <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45c.75 0 1.41-.41 1.75-1.03L21.7 4H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                        </svg>
+                        <span class="btn-text">Add to Cart</span>
+                        <span id="cart-loading" class="htmx-indicator spinner"></span>
+                    </button>
+                </form>
+                {% else %}
+                <button class="add-to-cart-btn disabled" disabled>
+                    <span class="btn-text">Out of Stock</span>
+                </button>
+                {% endif %}
+                
+                <div id="add-success" class="success-notification" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Added to cart!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="product-description-section">
+        <h2 class="description-title">Product Description</h2>
+        <div class="product-description">
+            {{ prod.content|linebreaks }}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        if (evt.target.id === 'cart-count') {
+            const successMsg = document.getElementById('add-success');
+            successMsg.style.display = 'flex';
+            
+            const btnText = document.querySelector('.btn-text');
+            const originalText = btnText.textContent;
+            btnText.textContent = 'Added!';
+            
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+                btnText.textContent = originalText;
+            }, 2000);
+        }
+    });
+    
+    document.body.addEventListener('htmx:responseError', function(evt) {
+        alert('Error adding item to cart. Please try again.');
+    });
+</script>
+{% endblock %}

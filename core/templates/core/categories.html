@@ -1,0 +1,13 @@
+<ul>
+    {% for c in cats %}
+        {% if c.pk == cat_selected %}
+            <li class="selected">
+                <a href="{{ c.get_absolute_url }}" class="nav_links">{{c.name}}</a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{{ c.get_absolute_url }}" class="nav_links">{{c.name}}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
