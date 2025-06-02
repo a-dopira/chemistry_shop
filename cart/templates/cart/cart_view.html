@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="cart-view">
+    <div class="cart-header">
+        <h1>Shopping Cart</h1>
+        <div class="cart-count-display">
+            <span id="cart-items-count">{{ cart|length }} item{{ cart|length|pluralize }}</span>
+        </div>
+    </div>
+    
+    <div id="cart-content" class="cart-content">
+        {% include 'cart/cart_content.html' %}
+    </div>
+</div>
+{% endblock %}

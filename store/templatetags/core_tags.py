@@ -42,7 +42,7 @@ def show_menu():
 @register.inclusion_tag("core/footer.html")
 def show_footer():
     footer = [
-        {"title": "Home", "url_name": "home"},
+        {"title": "Home", "url_name": "showcase"},
         {"title": "About", "url_name": "about"},
         {"title": "Contact", "url_name": "contact"},
     ]

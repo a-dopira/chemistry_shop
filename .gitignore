@@ -1,10 +1,12 @@
 # templates
 
-store/templates/store/partials/paginator.html
+store/templates/store/checkout.html
+
+payment
 
 # static files
-store/static/store/icons
-store/static/store/images
+*/static/*/icons
+*/static/*/images
 
 # media files
 media

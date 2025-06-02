@@ -1,0 +1,41 @@
+<div class="form-group">
+  <label for="{{ form.address.id_for_label }}">Address:</label>
+  {{ form.address }}
+  {% if form.address.errors %}
+    <div class="error-message">
+      {% for error in form.address.errors %}
+        <small class="text-danger">{{ error }}</small>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<div class="form-group">
+  <label for="{{ form.phone_number.id_for_label }}">Phone Number:</label>
+  {{ form.phone_number }}
+  {% if form.phone_number.errors %}
+    <div class="error-message">
+      {% for error in form.phone_number.errors %}
+        <small class="text-danger">{{ error }}</small>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<div class="form-group">
+  <label for="{{ form.userphoto.id_for_label }}">Profile Photo:</label>
+  {{ form.userphoto }}
+  {% if form.userphoto.errors %}
+    <div class="error-message">
+      {% for error in form.userphoto.errors %}
+        <small class="text-danger">{{ error }}</small>
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% if form.instance.userphoto %}
+    <div class="current-photo">
+      <p>Current photo:</p>
+      <img src="{{ form.instance.userphoto.url }}" alt="Current photo" style="max-width: 100px; max-height: 100px; border-radius: 5px;">
+    </div>
+  {% endif %}
+</div>

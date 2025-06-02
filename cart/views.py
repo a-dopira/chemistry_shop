@@ -1,3 +1,5 @@
+import json
+
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.http import require_POST
@@ -6,18 +8,19 @@ from django.contrib.auth.decorators import login_required
 from django_htmx.http import HttpResponseClientRedirect
 
 from .cart import Cart
-from ..models import Ingredient, OrderItem
-from ..forms import OrderForm
+from store.models import Ingredient, OrderItem
+from store.forms import OrderForm
 
 
-@require_POST
 def add_to_cart(request, prod_id):
     product = get_object_or_404(Ingredient, pk=prod_id)
     cart = Cart(request)
     cart.add(prod_id)
 
     if request.htmx:
-        return HttpResponse(f"({len(cart)})")
+        response = HttpResponse(f"({len(cart)})")
+        response["HX-Trigger"] = json.dumps({"cartUpdated": {"count": len(cart)}})
+        return response
 
     messages.success(request, f"{product.title} added to cart!")
     return redirect("cart_view")
@@ -28,13 +31,9 @@ def remove_from_cart(request, prod_id):
     cart.remove(prod_id)
 
     if request.htmx:
-        return render(
-            request,
-            "store/cart_content.html",
-            {
-                "cart": cart,
-            },
-        )
+        response = render(request, "cart/cart_content.html", {"cart": cart})
+        response["HX-Trigger"] = json.dumps({"cartUpdated": {"count": len(cart)}})
+        return response
 
     return redirect("cart_view")
 
@@ -42,27 +41,19 @@ def remove_from_cart(request, prod_id):
 def change_quantity(request, prod_id):
     action = request.GET.get("action", "")
     cart = Cart(request)
-
     if action and action in ["increase", "decrease"]:
         quantity = 1 if action == "increase" else -1
-
         try:
             cart.add(prod_id, quantity, True)
         except Ingredient.DoesNotExist:
             cart.remove(prod_id)
-
     if request.htmx:
         if action == "get_count":
             return HttpResponse(f"({len(cart)})")
         else:
-            return render(
-                request,
-                "store/cart_content.html",
-                {
-                    "cart": cart,
-                },
-            )
-
+            response = render(request, "cart/cart_content.html", {"cart": cart})
+            response["HX-Trigger"] = f"cartUpdated:{len(cart)}"
+            return response
     return redirect("cart_view")
 
 
@@ -77,7 +68,7 @@ def cart_view(request):
             f"{removed_items} item(s) were removed from your cart because they are no longer available.",
         )
 
-    return render(request, "store/cart_view.html", {"title": "Cart", "cart": cart})
+    return render(request, "cart/cart_view.html", {"title": "Cart", "cart": cart})
 
 
 @login_required(login_url="login")
@@ -85,7 +76,6 @@ def checkout(request):
     cart = Cart(request)
     cart.clean_cart()
 
-    # Проверяем, что корзина не пустая
     if len(cart) == 0:
         messages.warning(request, "Your cart is empty. Add some items before checkout.")
         return redirect("cart_view")
@@ -93,14 +83,12 @@ def checkout(request):
     if request.method == "POST":
         form = OrderForm(request.POST)
         if form.is_valid():
-            # Еще раз проверяем корзину перед созданием заказа
             if len(cart) == 0:
                 messages.error(request, "Cannot create order with empty cart.")
                 return redirect("cart_view")
 
             total_price = cart.get_total_cost()
 
-            # Проверяем, что общая стоимость больше 0
             if total_price <= 0:
                 messages.error(request, "Invalid order total. Please check your cart.")
                 return redirect("cart_view")
@@ -108,18 +96,14 @@ def checkout(request):
             order = form.save(commit=False)
             order.created_by = request.user
             order.paid_amount = total_price
-            order.total_amount = (
-                total_price  # Исправлено: должна быть общая стоимость, а не количество
-            )
+            order.total_amount = total_price
             order.save()
 
-            # Создаем OrderItem для каждого товара в корзине
             order_items_created = 0
             for item in cart:
                 product = item["product"]
                 quantity = int(item["quantity"])
 
-                # Проверяем наличие товара на складе
                 if not product.is_in_stock or product.quantity < quantity:
                     messages.warning(
                         request,
@@ -132,17 +116,15 @@ def checkout(request):
                 OrderItem.objects.create(
                     order=order,
                     product=product,
-                    price=item_price,  # Общая стоимость позиции
+                    price=item_price,
                     quantity=quantity,
                 )
 
-                # Уменьшаем количество товара на складе
                 product.quantity -= quantity
                 product.save()
 
                 order_items_created += 1
 
-            # Если ни одна позиция не была создана, удаляем заказ
             if order_items_created == 0:
                 order.delete()
                 messages.error(
@@ -155,7 +137,6 @@ def checkout(request):
                 request, f"Order #{order.id} has been created successfully!"
             )
 
-            # Используем HttpResponseClientRedirect для HTMX
             if request.htmx:
                 return HttpResponseClientRedirect("user_account")
 

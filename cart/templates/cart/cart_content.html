@@ -1,3 +1,4 @@
+{% load static %}
 {% if cart|length %}
     <div class="cart-items">
         {% for item in cart %}
@@ -18,7 +19,7 @@
                         hx-target="#cart-content"
                         hx-swap="innerHTML"
                         hx-indicator="#cart-loading-{{ item.product.id }}"
-                        class="quantity-btn decrease-btn"
+                        class="quantity-btn"
                         type="button"
                     >
                         −
@@ -34,7 +35,7 @@
                         hx-target="#cart-content"
                         hx-swap="innerHTML"
                         hx-indicator="#cart-loading-{{ item.product.id }}"
-                        class="quantity-btn increase-btn"
+                        class="quantity-btn"
                         type="button"
                     >
                         +
@@ -68,9 +69,15 @@
 
 {% else %}
     <div class="empty-cart-message">
-        <div class="empty-cart-icon">🛒</div>
+        <div class="empty-cart-icon">
+            <img src="{% static 'core/images/cart.png' %}"/>
+        </div>
         <h3>Your cart is empty</h3>
         <p>Add some items to get started!</p>
-        <a href="{% url 'home' %}" class="btn-primary">Continue Shopping</a>
+        <button class="btn-primary"> 
+            <a href="{% url 'showcase' %}" >
+                Continue Shopping
+            </a>
+        </button>
     </div>
 {% endif %}

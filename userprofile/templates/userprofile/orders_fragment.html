@@ -1,25 +1,37 @@
-{% for order in orders %}
-<ul class="user_profile__order">
-  <li style="font-size: 20px">
-    <b>Order from: {{ order.created_at|date:"Y-m-d" }}</b>
-  </li>
-  <li>Total price: {{ order.paid_amount }}$</li>
-  <li>
-    Status: {% if order.is_paid %}
-    <span style="color: #006b1b">done</span>
-    {% else %}
-    <span style="color: #94b24d">pending</span>
-    {% endif %}
-  </li>
-  <li>
-    <div>Order containment:</div>
-    <div style="display: flex">
-      {% for item in order.items.all %}
-      <div>
-        {{ item.product.title }}: {{ item.quantity }}x{{ item.product.quantity }}
+<div id="orders-container">
+  {% if orders %}
+  <p>My orders:</p>
+  {% for order in orders %}
+  <ul class="user_profile__order">
+    <li style="font-size: 20px">
+      <b>Order from: {{ order.created_at|date:"Y-m-d" }}</b>
+    </li>
+    <li>Total price: {{ order.paid_amount }}$</li>
+    <li>
+      Status: {% if order.is_paid %}
+      <span style="color: #006b1b">done</span>
+      {% else %}
+      <span style="color: #94b24d">pending</span>
+      {% endif %}
+    </li>
+    <li>
+      <div>Order containment:</div>
+      <div style="display: flex">
+        {% for item in order.items.all %}
+        <div>
+          {{ item.product.title }}: {{ item.quantity }}x{{ item.product.price }}$
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
-  </li>
-</ul>
-{% endfor %}
+    </li>
+  </ul>
+  {% endfor %}
+{% else %}
+  <div>
+    <p>No orders yet!</p>
+    <a href="{% url 'showcase' %}"> 
+      Continue shopping
+    </a>
+  </div>
+{% endif %}
+</div>

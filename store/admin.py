@@ -21,7 +21,7 @@ class CategoryAdmin(admin.ModelAdmin):
                 reverse("admin:store_ingredient_changelist")
                 + f"?cat__id__exact={obj.id}"
             )
-            return format_html('<a href="{}">{} ingredients</a>', url, count)
+            return format_html(f'<a href="{url}">{count} ingredients</a>')
         return "0 ingredients"
 
     ingredient_count.short_description = "Ingredients"
@@ -73,8 +73,7 @@ class IngredientAdmin(admin.ModelAdmin):
         if obj.photo and hasattr(obj.photo, "url"):
             try:
                 return format_html(
-                    '<img src="{}" style="max-height: 100px; max-width: 100px; object-fit: cover;" />',
-                    obj.photo.url,
+                    f'<img src="{obj.photo.url}" style="max-height: 100px; max-width: 100px; object-fit: cover;" />',
                 )
             except ValueError:
                 return "Photo file not found"
@@ -85,7 +84,7 @@ class IngredientAdmin(admin.ModelAdmin):
     def is_in_stock(self, obj):
         if obj.quantity > 0:
             return format_html(
-                '<span style="color: green;">✓ In Stock ({})</span>', obj.quantity
+                f'<span style="color: green;">✓ In Stock ({obj.quantity})</span>'
             )
         return format_html('<span style="color: red;">✗ Out of Stock</span>')
 

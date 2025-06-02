@@ -4,10 +4,12 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.http import HttpResponse
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 
-from .forms import RegisterUserForm, SignInForm
+from .forms import RegisterUserForm, SignInForm, UserProfileForm
 from store.models import Order
+
+from userprofile.models import UserProfile
 
 
 class MyAccount(LoginRequiredMixin, ListView):
@@ -25,19 +27,33 @@ class MyAccount(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        try:
+            profile = UserProfile.objects.select_related("user").get(
+                user=self.request.user
+            )
+        except UserProfile.DoesNotExist:
+            profile = UserProfile.objects.create(user=self.request.user)
+
         context.update(
             {
                 "title": f"{self.request.user.username} | The Hag's Cure",
                 "name": self.request.user.username,
                 "email": self.request.user.email,
+                "profile": profile,
             }
         )
         return context
 
-    def render_to_response(self, context, **response_kwargs):
-        if self.request.headers.get("HX-Request"):
-            return render(self.request, "userprofile/orders_fragment.html", context)
-        return super().render_to_response(context, **response_kwargs)
+    def get_template_names(self):
+        if (
+            self.request.headers.get("HX-Request")
+            and self.request.GET.get("section") == "profile"
+        ):
+            return ["userprofile/profile_section_fragment.html"]
+        elif self.request.headers.get("HX-Request"):
+            return ["userprofile/orders_fragment.html"]
+        return [self.template_name]
 
 
 class RegistrationPage(CreateView):
@@ -78,7 +94,7 @@ class SignInPage(LoginView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy("home")
+        return reverse_lazy("showcase")
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -98,6 +114,30 @@ class SignInPage(LoginView):
         return super().form_invalid(form)
 
 
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    model = UserProfile
+    form_class = UserProfileForm
+    template_name = "userprofile/profile_update_modal.html"
+    success_url = reverse_lazy("user_account")
+
+    def get_object(self):
+        profile, created = UserProfile.objects.get_or_create(user=self.request.user)
+        return profile
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        if self.request.headers.get("HX-Request"):
+            return HttpResponse("", headers={"HX-Trigger": "profileUpdated"})
+        return response
+
+    def form_invalid(self, form):
+        if self.request.headers.get("HX-Request"):
+            return render(
+                self.request, "userprofile/profile_form_fragment.html", {"form": form}
+            )
+        return super().form_invalid(form)
+
+
 def logout_user(request):
     logout(request)
-    return redirect("home")
+    return redirect("showcase")

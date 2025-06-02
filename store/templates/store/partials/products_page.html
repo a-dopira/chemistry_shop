@@ -14,7 +14,7 @@
                 <p style="margin-top: 0px; margin-bottom: 0px">Found {{ page_obj.paginator.count }} result{{ page_obj.paginator.count|pluralize }}</p>
             {% else %}
                 <p>No ingredients found for "{{ query }}"</p>
-                <a href="{% url 'home' %}"><i>Browse all ingredients</i></a>
+                <a href="{% url 'showcase' %}"><i>Browse all ingredients</i></a>
             {% endif %}
         </div>
         {% endif %}
@@ -27,7 +27,7 @@
                 <p style="margin-top: 0px; margin-bottom: 0px">{{ page_obj.paginator.count }} ingredient{{ page_obj.paginator.count|pluralize }}</p>
             {% else %}
                 <p style="margin-top: 0px; margin-bottom: 5px">No ingredients in this category yet</p>
-                <a href="{% url 'home' %}"><i>Browse all ingredients</i></a>
+                <a href="{% url 'showcase' %}"><i>Browse all ingredients</i></a>
             {% endif %}
         </div>
         {% endif %}
@@ -36,7 +36,7 @@
         {% if products %}
         <div class="list_ingredients">
             {% for product in products %}
-                {% include 'core/partials/product_card.html' %}
+                {% include 'store/partials/product_card.html' %}
             {% endfor %}
         </div>
         

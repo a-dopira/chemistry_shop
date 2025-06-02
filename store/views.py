@@ -1,8 +1,8 @@
 from django.db.models import Q
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, Http404
 from django.views.generic import ListView, DetailView
 
-from .models import Ingredient
+from .models import Category, Ingredient
 
 
 class SingleProduct(DetailView):
@@ -12,24 +12,79 @@ class SingleProduct(DetailView):
     slug_url_kwarg = "prod_slug"
 
     def get_quantity_range(self, prod):
-        """Возвращает range для селектора количества"""
         return range(1, prod.quantity + 1) if prod.is_in_stock else []
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         prod = context["prod"]
 
-        def_context = self.get_user_context(
-            title=f"{prod.title} | {prod.cat.name}",
-            cat_selected=prod.cat.id,
-            quantity_range=self.get_quantity_range(prod),
+        context.update(
+            {
+                "title": f"{prod.title} | {prod.cat.name}",
+                "cat_selected": prod.cat.id,
+                "quantity_range": self.get_quantity_range(prod),
+            }
         )
-        return context | def_context
+        return context
+
+
+class IngredientsList(ListView):
+    paginate_by = 3
+    model = Ingredient
+    template_name = "store/showcase.html"
+    context_object_name = "products"
+
+    def get_queryset(self):
+        cat_slug = self.kwargs.get("cat_slug")
+        if cat_slug:
+            return Ingredient.objects.filter(cat__slug=cat_slug).select_related("cat")
+        return Ingredient.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        cat_slug = self.kwargs.get("cat_slug")
+        if cat_slug:
+            try:
+                category = Category.objects.get(slug=cat_slug)
+                context.update(
+                    {
+                        "category": category,
+                        "cat_selected": category.pk,
+                        "title": f"{category.name} | Categories",
+                        "is_category": True,
+                    }
+                )
+            except Category.DoesNotExist:
+                raise Http404("Category does not exist")
+        else:
+            context.update(
+                {
+                    "cat_selected": 0,
+                    "title": "The Hag's Cure",
+                }
+            )
+
+        if self.request.htmx:
+            current_page = int(self.request.GET.get("page", 1))
+            context["total_shown"] = current_page * self.paginate_by
+            context["total_items"] = self.get_queryset().count()
+
+        return context
+
+    def get_template_names(self):
+        if self.request.htmx:
+            load_more = self.request.GET.get("load_more")
+            if load_more:
+                return ["store/partials/load_more_response.html"]
+            else:
+                return ["store/partials/products_page.html"]
+        return [self.template_name]
 
 
 class FormSearch(ListView):
     model = Ingredient
-    template_name = "core/home.html"
+    template_name = "store/showcase.html"
     context_object_name = "products"
     paginate_by = 3
 

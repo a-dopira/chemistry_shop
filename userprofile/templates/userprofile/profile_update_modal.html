@@ -1,0 +1,19 @@
+<form hx-post="{% url 'update_profile' %}" 
+      hx-target="#modal-form-container" 
+      hx-encoding="multipart/form-data"
+      enctype="multipart/form-data">
+  {% csrf_token %}
+  
+  <div id="form-content">
+    {% include 'userprofile/profile_form_fragment.html' %}
+  </div>
+  
+  <div class="btn-group">
+    <button type="button" class="btn-primary" onclick="closeProfileModal()">
+      Cancel
+    </button>
+    <button type="submit" class="btn-primary">
+      Save Changes
+    </button>
+  </div>
+</form>

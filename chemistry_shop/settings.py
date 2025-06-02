@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     # custom apps
     "store.apps.StoreConfig",
     "core.apps.CoreConfig",
+    "cart.apps.CartConfig",
     "userprofile.apps.UserprofileConfig",
 ]
 
@@ -55,7 +56,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "utils.context_processors.cart",
+                "cart.context_processors.cart",
             ],
         },
     },

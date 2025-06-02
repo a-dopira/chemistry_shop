@@ -16,4 +16,3 @@ class OrderForm(forms.ModelForm):
             "zipcode",
             "city",
         )
-
