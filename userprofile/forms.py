@@ -25,12 +25,6 @@ class RegisterUserForm(UserCreationForm):
         model = User
         fields = ("username", "email", "password1", "password2")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for fieldname in ["username", "password1", "password2"]:
-            if fieldname in self.fields:
-                self.fields[fieldname].help_text = None
-
 
 class SignInForm(AuthenticationForm):
     username = forms.EmailField(
@@ -58,9 +52,15 @@ class SignInForm(AuthenticationForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    
     class Meta:
         model = UserProfile
         fields = ["address", "phone_number", "userphoto"]
+        labels = {
+            "address": "Адрес",
+            "phone_number": "Номер телефона", 
+            "userphoto": "Фото профиля"
+        }
         widgets = {
             "address": forms.TextInput(
                 attrs={"class": "form-input", "placeholder": " "}
@@ -72,3 +72,24 @@ class UserProfileForm(forms.ModelForm):
                 attrs={"class": "form-input", "accept": "image/*"}
             ),
         }
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        if phone_number:
+            cleaned_phone = ''.join(filter(str.isdigit, phone_number))
+            
+            if not cleaned_phone.startswith('380'):
+                raise forms.ValidationError("Phone number should start with +380")
+            
+            if len(cleaned_phone) != 12:
+                raise forms.ValidationError("Invalid phone number")
+            
+            return f"+{cleaned_phone}"
+        
+        return phone_number
+    
+    def clean_address(self):
+        address = self.cleaned_data.get('address')
+        if address and len(address) < 10:
+            raise forms.ValidationError("Address is too short")
+        return address

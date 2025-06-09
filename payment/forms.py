@@ -9,6 +9,16 @@ class OrderForm(forms.ModelForm):
             'first_name', 'last_name', 'email', 'phone',
             'address', 'city', 'zipcode', 'country'
         ]
+        labels = {
+            'first_name': 'First Name',
+            'last_name': 'Last Name',
+            'email': 'Email Address',
+            'phone': 'Phone Number',
+            'address': 'Street Address',
+            'city': 'City',
+            'zipcode': 'ZIP Code',
+            'country': 'Country'
+        }
         widgets = {
             'first_name': forms.TextInput(attrs={
                 'class': 'form-control',

@@ -150,5 +150,6 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 def logout_user(request):
+    request.session.flush()
     logout(request)
     return redirect("showcase")

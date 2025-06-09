@@ -1,7 +1,8 @@
 <form hx-post="{% url 'update_profile' %}" 
-      hx-target="#modal-form-container" 
+      hx-target="#form-content" 
       hx-encoding="multipart/form-data"
-      enctype="multipart/form-data">
+      enctype="multipart/form-data"
+      novalidate>
   {% csrf_token %}
   
   <div id="form-content">
