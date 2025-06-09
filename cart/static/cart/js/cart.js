@@ -2,10 +2,10 @@
 
 document.body.addEventListener('cartUpdated', function(e) {
     const count = e.detail.count;
-    updateCartCountDisplay(`(${count})`);
+    updateCartCount(`(${count})`);
 });
 
-function updateCartCountDisplay(countText) {
+function updateCartCount(countText) {
     const cartCount = document.getElementById('cart-count');
     if (cartCount) {
         cartCount.innerHTML = countText;

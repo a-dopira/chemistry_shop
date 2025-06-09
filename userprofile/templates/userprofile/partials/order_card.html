@@ -1,0 +1,90 @@
+<ul class="order_item" id="order-{{ order.id }}">
+    <li style="font-size: 20px">
+        <b>Order from: {{ order.created_at|date:"Y-m-d" }}</b>
+    </li>
+    <li>Total price: {{ order.total_amount }}$</li>
+    <li>
+        Status: 
+        {% if order.status == 'processing' %}
+            <span style="color: #F59E0B; font-weight: bold;">{{ order.get_status_display }}</span>
+        {% elif order.status == 'shipped' %}
+            <span style="color: #3B82F6; font-weight: bold;">{{ order.get_status_display }}</span>
+        {% elif order.status == 'delivered' %}
+            <span style="color: #10B981; font-weight: bold;">{{ order.get_status_display }}</span>
+        {% elif order.status == 'cancelled' %}
+            <span style="color: #EF4444; font-weight: bold;">{{ order.get_status_display }}</span>
+        {% else %}
+            <span style="color: #6B7280; font-weight: bold;">{{ order.get_status_display }}</span>
+        {% endif %}
+    </li>
+    <li>
+        {% if order.is_paid %}
+            Payment: <span style="color: #10B981; font-weight: bold;">Paid</span>
+        {% else %}
+            Payment: <span style="color: #EF4444; font-weight: bold;">Unpaid</span>
+        {% endif %}
+    </li>
+    <li>
+        <div>Order containment:</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px;">
+        {% for item in order.items.all %}
+        <div style="background: #f3f4f6; padding: 8px 12px; border-radius: 6px; font-size: 14px;">
+            {{ item.product.title }}: {{ item.quantity }}x${{ item.product.price }}
+        </div>
+        {% endfor %}
+        </div>
+    </li>
+    <li>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+        {% if order.refund_id %}
+            <span style="color: #3B82F6; font-weight: bold; padding: 8px 12px; background: #EBF8FF; border-radius: 6px;">
+                Order has been refunded
+            </span>
+        {% elif order.status == 'cancelled' %}
+            <span style="color: #EF4444; font-weight: bold; padding: 8px 12px; background: #FEF2F2; border-radius: 6px;">
+                This order was cancelled
+            </span>
+        {% elif order.status == 'delivered' %}
+            <span style="color: #10B981; font-weight: bold; padding: 8px 12px; background: #F0FDF4; border-radius: 6px;">
+                Order delivered successfully!
+            </span>
+        {% elif order.status == 'shipped' %}
+            <span style="color: #3B82F6; font-weight: bold; padding: 8px 12px; background: #EBF8FF; border-radius: 6px;">
+                Order shipped - cannot be cancelled
+            </span>
+        {% elif order.is_paid and order.status == 'processing' %}
+            <span style="color: #F59E0B; font-weight: bold; padding: 8px 12px; background: #FFFBEB; border-radius: 6px;">
+                Order is being processed
+            </span>
+            <button hx-post="{% url 'cancel_order' order.id %}"
+                hx-target="#order-{{ order.id }}"
+                hx-confirm="Are you sure you want to cancel this order? Your payment will be refunded."
+                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                hx-swap="outerHTML"
+                class="product-card__button"
+                style="background-color: #EF4444; border-color: #EF4444; color: #ffffff;"
+                title="Cancel order and get refund"
+            >
+                Cancel & Refund
+            </button>
+        {% elif not order.is_paid %}
+            <a href="{% url 'payment_process' order.id %}" 
+                class="product-card__button" 
+                style="background-color: #10B981; border-color: #10B981; color: #ffffff;"
+            >
+                Complete Payment
+            </a>
+            <button hx-post="{% url 'cancel_order' order.id %}"
+                hx-target="#order-{{ order.id }}"
+                hx-confirm="Are you sure you want to cancel this order?"
+                hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                hx-swap="outerHTML"
+                class="product-card__button"
+                style="background-color: #6B7280; border-color: #6B7280; color: #ffffff;"
+            >
+                Cancel Order
+            </button>
+        {% endif %}
+        </div>
+    </li>
+</ul>

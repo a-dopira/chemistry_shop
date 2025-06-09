@@ -7,7 +7,7 @@
     box-shadow: var(--shadow);
 }
 
-.user_profile__order {
+.order_item {
     margin: 1rem 0;
     padding: 1rem;
     border: 1px solid var(--primary-color);
@@ -16,7 +16,7 @@
     background: #f9f9f9;
 }
 
-.user_profile__order li {
+.order_item li {
     margin: 0.5rem 0;
 }
 
@@ -60,7 +60,6 @@
   background-color: #0056b3;
 }
 
-/* Стили для настоящего модального окна */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -135,33 +134,6 @@
   background-color: #f5f5f5;
 }
 
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #333;
-}
-
-.form-input {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: border-color 0.3s;
-  box-sizing: border-box;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
-}
-
 .btn-group {
   display: flex;
   gap: 12px;
@@ -169,53 +141,6 @@
   margin-top: 25px;
   padding-top: 20px;
   border-top: 1px solid #eee;
-}
-
-.btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 500;
-  transition: all 0.3s;
-  min-width: 100px;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background-color: #545b62;
-  transform: translateY(-1px);
-}
-
-.alert {
-  padding: 15px;
-  margin: 20px 0;
-  border: 1px solid transparent;
-  border-radius: 6px;
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 10000;
-  min-width: 300px;
-  opacity: 0;
-  transform: translateX(100%);
-  transition: all 0.3s ease-in-out;
-}
-
-.alert.show {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.alert-success {
-  color: #155724;
-  background-color: #d4edda;
-  border-color: #c3e6cb;
 }
 
 .error-message {

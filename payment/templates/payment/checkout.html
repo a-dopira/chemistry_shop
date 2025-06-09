@@ -1,0 +1,112 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="checkout-container">
+    <h1>Checkout</h1>
+    
+    <div class="checkout-content">
+        <!-- order summary -->
+        <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-items">
+                {% for item in cart %}
+                <div class="summary-item">
+                    <div class="item-info">
+                        <span class="item-name">{{ item.product.title }}</span>
+                        <span class="item-quantity">x{{ item.quantity }}</span>
+                    </div>
+                    <span class="item-price">${{ item.total_price }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="summary-total">
+                <strong>Total: ${{ cart.get_total_cost }}</strong>
+            </div>
+        </div>
+
+        <!-- checkout form -->
+        <div class="checkout-form">
+            <h3>Billing Information</h3>
+            <form method="post" id="checkout-form">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.first_name.id_for_label }}">First Name *</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <div class="form-error">{{ form.first_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.last_name.id_for_label }}">Last Name *</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <div class="form-error">{{ form.last_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.email.id_for_label }}">Email *</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <div class="form-error">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.phone.id_for_label }}">Phone</label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}
+                        <div class="form-error">{{ form.phone.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.address.id_for_label }}">Address *</label>
+                    {{ form.address }}
+                    {% if form.address.errors %}
+                        <div class="form-error">{{ form.address.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="{{ form.city.id_for_label }}">City *</label>
+                        {{ form.city }}
+                        {% if form.city.errors %}
+                            <div class="form-error">{{ form.city.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="{{ form.zipcode.id_for_label }}">ZIP Code *</label>
+                        {{ form.zipcode }}
+                        {% if form.zipcode.errors %}
+                            <div class="form-error">{{ form.zipcode.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.country.id_for_label }}">Country *</label>
+                    {{ form.country }}
+                    {% if form.country.errors %}
+                        <div class="form-error">{{ form.country.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="form-actions">
+                    <a href="{% url 'cart_view' %}" class="btn btn-secondary">
+                        ← Back to Cart
+                    </a>
+                    <button type="submit" class="product-card__button">
+                        Continue to Payment →
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

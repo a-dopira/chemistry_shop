@@ -14,6 +14,17 @@
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const quantitySelect = document.getElementById('quantity');
+    const quantityInput = document.getElementById('quantity-input');
+    
+    if (quantitySelect && quantityInput) {
+        quantitySelect.addEventListener('change', function() {
+            quantityInput.value = this.value;
+        });
+    }
+});
+
 document.body.addEventListener('htmx:responseError', function(e) {
     alert('Error adding item to cart. Please try again.');
 });

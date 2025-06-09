@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<div class="cancelled-container">
+    <div class="cancelled-content">
+        <div class="cancelled-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" fill="#EF4444"/>
+                <path d="m15 9-6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="m9 9 6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        
+        <h1>Payment Cancelled</h1>
+        <p class="cancelled-message">
+            Your payment was cancelled. No charges have been made to your account.
+        </p>
+        
+        <div class="info-box">
+            <h3>What happened?</h3>
+            <p>
+                The payment process was interrupted or cancelled. This could happen if:
+            </p>
+            <ul>
+                <li>You clicked the back button during payment</li>
+                <li>You closed the payment window</li>
+                <li>There was a network connectivity issue</li>
+                <li>You chose to cancel the payment</li>
+            </ul>
+        </div>
+        
+        <div class="next-steps">
+            <h3>What can you do now?</h3>
+            <p>Don't worry! Your items are still in your cart and you can try again.</p>
+        </div>
+        
+        <div class="action-buttons">
+            <a href="{% url 'cart_view' %}" class="product-card__button">
+                Return to Cart
+            </a>
+            <a href="{% url 'checkout' %}" class="product-card__button">
+                Try Payment Again
+            </a>
+            <a href="{% url 'showcase' %}" class="product-card__button">
+                Continue Shopping
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

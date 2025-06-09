@@ -62,7 +62,7 @@
         <div class="total-price">
             <strong>Total cost: ${{ cart.get_total_cost }}</strong>
         </div>
-        <a href="{% url 'checkout' %}" class="checkout-btn btn-primary">
+        <a href="{% url 'checkout' %}" class="product-card__button">
             Proceed to Checkout
         </a>
     </div>
@@ -74,7 +74,7 @@
         </div>
         <h3>Your cart is empty</h3>
         <p>Add some items to get started!</p>
-        <button class="btn-primary"> 
+        <button class="product-card__button"> 
             <a href="{% url 'showcase' %}" >
                 Continue Shopping
             </a>

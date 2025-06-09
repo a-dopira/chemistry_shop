@@ -26,9 +26,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_htmx",
     # custom apps
-    "store.apps.StoreConfig",
     "core.apps.CoreConfig",
     "cart.apps.CartConfig",
+    "payment.apps.PaymentConfig",
+    "store.apps.StoreConfig",
     "userprofile.apps.UserprofileConfig",
 ]
 
@@ -109,3 +110,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+# stripe
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+
+# liqpay
+
+LIQPAY_PUBLIC_KEY = os.getenv("LIQPAY_PUBLIC_KEY")
+
+LIQPAY_PRIVATE_KEY = os.getenv("LIQPAY_PRIVATE_KEY")
+
+LIQPAY_SANDBOX = True

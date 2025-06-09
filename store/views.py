@@ -69,6 +69,7 @@ class IngredientsList(ListView):
             current_page = int(self.request.GET.get("page", 1))
             context["total_shown"] = current_page * self.paginate_by
             context["total_items"] = self.get_queryset().count()
+            context["target_container"] = "products-container"
 
         return context
 

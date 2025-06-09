@@ -119,13 +119,18 @@ class Order(models.Model):
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100, default="Ukraine")
 
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    total_amount = models.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        validators=[MinValueValidator(Decimal("0.01"))]
+    )
     paid_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     is_paid = models.BooleanField(default=False)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
 
     payment_intent = models.CharField(max_length=255, blank=True)
     payment_method = models.CharField(max_length=50, blank=True)
+    refund_id = models.CharField(max_length=200, blank=True)
 
     created_by = models.ForeignKey(
         User, related_name="orders", on_delete=models.SET_NULL, null=True, blank=True

@@ -1,31 +1,17 @@
+{% load core_tags %}
 <div id="orders-container">
   {% if orders %}
   <p>My orders:</p>
-  {% for order in orders %}
-  <ul class="user_profile__order">
-    <li style="font-size: 20px">
-      <b>Order from: {{ order.created_at|date:"Y-m-d" }}</b>
-    </li>
-    <li>Total price: {{ order.paid_amount }}$</li>
-    <li>
-      Status: {% if order.is_paid %}
-      <span style="color: #006b1b">done</span>
-      {% else %}
-      <span style="color: #94b24d">pending</span>
-      {% endif %}
-    </li>
-    <li>
-      <div>Order containment:</div>
-      <div style="display: flex">
-        {% for item in order.items.all %}
-        <div>
-          {{ item.product.title }}: {{ item.quantity }}x{{ item.product.price }}$
-        </div>
-        {% endfor %}
-      </div>
-    </li>
-  </ul>
-  {% endfor %}
+  <div class="list_orders">
+    {% for order in orders %}
+      {% include 'userprofile/partials/order_card.html' %}
+    {% endfor %}
+  </div>
+
+  {% if page_obj %}
+    {% show_hybrid_pagination page_obj "orders-container" %}
+  {% endif %}
+
 {% else %}
   <div>
     <p>No orders yet!</p>

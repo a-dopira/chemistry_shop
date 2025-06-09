@@ -2,7 +2,9 @@
 
 store/templates/store/checkout.html
 
-payment
+# payment
+
+payment/liqpay_client.py
 
 # static files
 */static/*/icons

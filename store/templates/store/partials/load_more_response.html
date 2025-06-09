@@ -1,9 +1,16 @@
-{% for product in products %}
-    {% include 'store/partials/product_card.html' %}
-{% endfor %}
+{% if products %}
+    {% for product in products %}
+        {% include 'store/partials/product_card.html' %}
+    {% endfor %}
+{% endif %}
+
+{% if orders %}
+    {% for order in orders %}
+        {% include 'userprofile/partials/order_card.html' %}
+    {% endfor %}
+{% endif %}
 
 {% load core_tags %}
 <div hx-swap-oob="true" id="smart-pagination">
-    {% show_hybrid_pagination page_obj "products-container" %}
+    {% show_hybrid_pagination page_obj target_container %}
 </div>
-

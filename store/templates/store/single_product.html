@@ -20,45 +20,44 @@
                 <div class="product-amount">{{ prod.amount }} {{ prod.unit }}</div>
                 
                 <div class="product-price">${{ prod.price }}</div>
-                
-                {% if prod.is_in_stock %}
-                <div class="quantity-selector">
-                    <label class="quantity-label">Quantity:</label>
-                    <select class="quantity-select" id="quantity" name="quantity" form="cart-form">
-                        {% for i in quantity_range %}
-                            <option value="{{ i }}">{{ i }}</option>
-                        {% endfor %}
-                    </select>
-                    <span class="stock-info">{{ prod.quantity }} in stock</span>
-                </div>
-                {% else %}
-                <div class="out-of-stock">
-                    <span class="stock-warning">Out of Stock</span>
-                </div>
-                {% endif %}
             </div>
 
             <div class="add-to-cart-section">
                 {% if prod.is_in_stock %}
                 <form method="post" action="{% url 'add_to_cart' prod.id %}" id="cart-form">
                     {% csrf_token %}
+                    <div class="quantity-selector">
+                        <label class="quantity-label">Quantity:</label>
+                        
+                    <input 
+                        type="number" 
+                        name="quantity" 
+                        id="quantity" 
+                        class="quantity-select"
+                        min="1" 
+                        max="{{ prod.quantity }}" 
+                        value="1"
+                        step="1"
+                    >
+                        <span class="stock-info">{{ prod.quantity }} in stock</span>
+                    </div>
                     <button 
                         hx-post="{% url 'add_to_cart' prod.id %}"
                         hx-target="#cart-count"
                         hx-swap="innerHTML"
                         hx-indicator="#cart-loading"
                         hx-include="[name='csrfmiddlewaretoken'], [name='quantity']"
-                        class="btn-primary"
+                        class="product-card__button"
                         type="submit"
                     >
                         <img src="{% static 'core/images/cart.png' %}" alt="Search" width="30" height="30">
 
-                        <span class="btn-text">Add to Cart</span>
+                        <span>Add to Cart</span>
                         <span id="cart-loading" class="htmx-indicator spinner"></span>
                     </button>
                 </form>
                 {% else %}
-                <button class="btn-primary disabled" disabled>
+                <button class="product-card__button disabled" disabled>
                     <span class="btn-text">Out of Stock</span>
                 </button>
                 {% endif %}

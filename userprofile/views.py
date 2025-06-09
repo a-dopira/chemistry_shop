@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.views.generic import CreateView, ListView, UpdateView
 
+
 from .forms import RegisterUserForm, SignInForm, UserProfileForm
 from store.models import Order
 
@@ -43,6 +44,13 @@ class MyAccount(LoginRequiredMixin, ListView):
                 "profile": profile,
             }
         )
+
+        if self.request.htmx:
+            current_page = int(self.request.GET.get("page", 1))
+            context["total_shown"] = current_page * self.paginate_by
+            context["total_items"] = self.get_queryset().count()
+            context["target_container"] = "orders-container" 
+        
         return context
 
     def get_template_names(self):
@@ -52,7 +60,11 @@ class MyAccount(LoginRequiredMixin, ListView):
         ):
             return ["userprofile/profile_section_fragment.html"]
         elif self.request.headers.get("HX-Request"):
-            return ["userprofile/orders_fragment.html"]
+            load_more = self.request.GET.get("load_more")
+            if load_more:
+                return ["store/partials/load_more_response.html"]
+            else:
+                return ["userprofile/orders_fragment.html"]
         return [self.template_name]
 
 
@@ -136,7 +148,6 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
                 self.request, "userprofile/profile_form_fragment.html", {"form": form}
             )
         return super().form_invalid(form)
-
 
 def logout_user(request):
     logout(request)

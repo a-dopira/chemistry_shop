@@ -1,12 +1,12 @@
 <div id="smart-pagination" class="smart-pagination">
     {% if page_obj.has_next %}
-    <div style="text-align: center;">
+    <div style="text-align: center; height: 62px;">
         <button 
-            class="load-more-btn"
+            class="product-card__button"
             hx-get="?page={{ page_obj.next_page_number }}&load_more=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}"
-            hx-target="#products-container .list_ingredients"
+            hx-target="{{ inner_target }}"
             hx-swap="beforeend"
-            hx-select=".product-card"
+            hx-select="{{ hx_select }}"
         >
             load more
         </button>

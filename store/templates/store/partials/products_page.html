@@ -34,13 +34,14 @@
         
         <!-- casual display -->
         {% if products %}
-        <div class="list_ingredients">
-            {% for product in products %}
-                {% include 'store/partials/product_card.html' %}
-            {% endfor %}
-        </div>
-        
-        {% show_hybrid_pagination page_obj "products-container" %}
+            <div class="list_ingredients">
+                {% for product in products %}
+                    {% include 'store/partials/product_card.html' %}
+                {% endfor %}
+            </div>
+            
+            {% show_hybrid_pagination page_obj "products-container" %}
         {% endif %}
+        
     </div>
 </div>

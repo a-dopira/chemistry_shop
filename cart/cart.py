@@ -38,9 +38,7 @@ class Cart:
         self.session.modified = True
 
     def add(self, product_id, quantity=1, override_quantity=False):
-        """
-        Добавляет товар в корзину или обновляет его количество
-        """
+        
         product_id = str(product_id)
 
         try:
