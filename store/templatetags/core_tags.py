@@ -14,8 +14,8 @@ def show_categories(sort=None, cat_selected=0):
 
 
 @register.inclusion_tag("core/partials/hybrid_pagination.html")
-def show_hybrid_pagination(page_obj, target_id, mode="pagination"):
-    
+def show_hybrid_pagination(page_obj, target_id):
+
     if target_id == "products-container":
         hx_select = ".product-card"
         inner_target = ".list_ingredients"
@@ -25,7 +25,7 @@ def show_hybrid_pagination(page_obj, target_id, mode="pagination"):
     else:
         hx_select = ".load-more-content"
         inner_target = f"#{target_id}"
-    
+
     return {
         "page_obj": page_obj,
         "paginator": page_obj.paginator,

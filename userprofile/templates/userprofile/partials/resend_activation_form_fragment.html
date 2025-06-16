@@ -1,0 +1,29 @@
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" style="padding: 10px; margin: 10px 0; border-radius: 5px;">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+<form
+  method="post"
+  hx-post="{% url 'resend_activation' %}"
+  hx-target="#resend-form"
+  hx-swap="outerHTML"
+>
+  {% csrf_token %}
+  
+  <p>
+    <label class="form-label" for="email">Email: </label>
+    <input type="email" name="email" id="email" 
+           class="form-input" placeholder=" " 
+           value="{{ email|default:'' }}" required>
+  </p>
+  
+  <div style="display: flex">
+    <button type="submit" class="login-button" style="margin: 0 auto">
+      Отправить письмо
+    </button>
+  </div>
+</form>

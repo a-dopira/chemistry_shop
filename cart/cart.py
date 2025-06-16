@@ -38,7 +38,7 @@ class Cart:
         self.session.modified = True
 
     def add(self, product_id, quantity=1, override_quantity=False):
-        
+
         product_id = str(product_id)
 
         try:
@@ -76,10 +76,7 @@ class Cart:
             self.save()
 
     def clean_cart(self):
-        """
-        Удаляет из корзины товары, которых нет в наличии или которые не опубликованы
-        Возвращает количество удаленных товаров
-        """
+
         removed_items = 0
         items_to_remove = []
 
@@ -115,7 +112,7 @@ class Cart:
         return len(self.cart) == 0
 
     def has_available_items(self):
-        """Проверяет, есть ли в корзине доступные товары"""
+
         for product_id, item in self.cart.items():
             try:
                 product = Ingredient.objects.get(id=product_id, is_published=True)

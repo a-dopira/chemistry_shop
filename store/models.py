@@ -120,9 +120,7 @@ class Order(models.Model):
     country = models.CharField(max_length=100, default="Ukraine")
 
     total_amount = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2, 
-        validators=[MinValueValidator(Decimal("0.01"))]
+        max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal("0.01"))]
     )
     paid_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     is_paid = models.BooleanField(default=False)

@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% block title %}{{ title }} | The Hag's Cure{% endblock %}
+{% block content %}
+<div class="">
+    <div style="text-align: center; max-width: 600px; margin: 50px auto; padding: 40px; background: #f8f9fa; border-radius: 10px;">
+        <div style="font-size: 4rem; margin-bottom: 20px;">📧</div>
+        <h1>Регистрация завершена!</h1>
+        <p>Спасибо за регистрацию на The Hag's Cure!</p>
+        <p>Мы отправили письмо с подтверждением на ваш email адрес. 
+           Пожалуйста, проверьте почту и перейдите по ссылке для активации аккаунта.</p>
+        
+        <div style="margin-top: 30px;">
+            <a href="{% url 'login' %}" class="btn" style="margin: 10px;">Войти в аккаунт</a>
+            <a href="{% url 'resend_activation' %}" class="btn" style="margin: 10px;">Отправить письмо повторно</a>
+        </div>
+        
+        <p style="margin-top: 20px; font-size: 0.9em; color: #666;">
+            Не забудьте проверить папку "Спам", если письмо не пришло в течение нескольких минут.
+        </p>
+    </div>
+</div>
+{% endblock %}

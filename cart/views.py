@@ -12,8 +12,8 @@ def add_to_cart(request, prod_id):
     product = get_object_or_404(Ingredient, pk=prod_id)
     cart = Cart(request)
 
-    quantity = int(request.POST.get('quantity', 1))
-    
+    quantity = int(request.POST.get("quantity", 1))
+
     cart.add(prod_id, quantity, override_quantity=False)
 
     if request.htmx:
@@ -68,4 +68,3 @@ def cart_view(request):
         )
 
     return render(request, "cart/cart_view.html", {"title": "Cart", "cart": cart})
-

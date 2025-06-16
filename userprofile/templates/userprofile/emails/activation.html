@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Активация аккаунта - {{ site_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .email-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .activation-button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: bold;
+            text-align: center;
+        }
+        .activation-button:hover {
+            background-color: #2980b9;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <div class="logo">{{ site_name }}</div>
+            <h2>Активация аккаунта</h2>
+        </div>
+        
+        <p>Здравствуйте, <strong>{{ user.username }}</strong>!</p>
+        
+        <p>Спасибо за регистрацию на нашем сайте. Чтобы завершить процесс регистрации, пожалуйста, активируйте ваш аккаунт, нажав на кнопку ниже:</p>
+        
+        <div style="text-align: center;">
+            <a href="{{ activation_url }}" class="activation-button">Активировать аккаунт</a>
+        </div>
+        
+        <p>Или скопируйте и вставьте эту ссылку в адресную строку браузера:</p>
+        <p style="word-break: break-all; background-color: #f8f9fa; padding: 10px; border-radius: 5px;">
+            {{ activation_url }}
+        </p>
+        
+        <div class="warning">
+            <strong>Важно:</strong> Эта ссылка действительна ограниченное время. Если вы не активируете аккаунт в течение нескольких дней, вам потребуется зарегистрироваться заново.
+        </div>
+        
+        <p>Если вы не регистрировались на нашем сайте, просто проигнорируйте это письмо.</p>
+        
+        <div class="footer">
+            <p>С уважением,<br>Команда {{ site_name }}</p>
+            <p>Это автоматическое письмо, не отвечайте на него.</p>
+        </div>
+    </div>
+</body>
+</html>

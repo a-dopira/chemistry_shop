@@ -1,10 +1,15 @@
 # templates
 
 store/templates/store/checkout.html
+userprofile/templates/userprofile/emails/password_*
 
 # payment
 
 payment/liqpay_client.py
+
+# management commands
+
+userprofile/management/commands
 
 # static files
 */static/*/icons

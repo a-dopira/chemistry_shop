@@ -1,7 +1,7 @@
 <form
   method="post"
-  hx-post="{% url 'login' %}"
-  hx-target="#login-form"
+  hx-post="{% url 'register' %}"
+  hx-target="#registration-form"
   hx-swap="outerHTML"
 >
   {% csrf_token %}
@@ -15,7 +15,7 @@
   {% endfor %}
   <div style="display: flex">
     <button type="submit" class="login-button" style="margin: 0 auto">
-      Login
+      Sign up
     </button>
   </div>
 </form>

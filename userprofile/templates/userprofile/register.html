@@ -5,21 +5,13 @@
     <div style="text-align: center">
         <h1>{{title}}</h1>
     </div>
-    <div class="form-itself">
-        <form method="post">
-        {% csrf_token %}
-
-        <div class="form-error">{{ form.non_field_errors }}</div>
-
-        {% for f in form %}
-        <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
-        <div class="form-error">{{ f.errors }}</div>
-        {% endfor %}
-        <div style="display: flex">
-            <button type="submit" class="login-button" style="margin: 0 auto;">Sing up</button>
-        </div>
-        </form>
+    <div id="registration-form">
+        {% include 'userprofile/partials/register_form_fragment.html' %}
+    </div>
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <p><a href="{% url 'login' %}">Уже есть аккаунт? Войти</a></p>
+        <p><a href="{% url 'resend_activation' %}">Не получили письмо активации?</a></p>
     </div>
 </div>
-
 {% endblock %}
