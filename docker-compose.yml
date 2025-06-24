@@ -1,0 +1,56 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --appendfsync everysec
+    ports:
+      - "6379:6379"  
+
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  celery:
+    build: ./backend
+    env_file: .env
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+    restart: always
+    command: celery -A chemistry_shop worker --loglevel=info --beat
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend/staticfiles:/app/staticfiles:ro
+      - ./backend/media:/app/media:ro
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data: 
+  static_volume:
+  media_volume:

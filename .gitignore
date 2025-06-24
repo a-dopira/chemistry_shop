@@ -1,15 +1,16 @@
 # templates
 
-store/templates/store/checkout.html
-userprofile/templates/userprofile/emails/password_*
+backend/userprofile/templates/userprofile/emails/password_*
 
 # payment
 
-payment/liqpay_client.py
+backend/payment/liqpay_client.py
 
 # management commands
 
-userprofile/management/commands
+backend/userprofile/management
+backend/core/management
+*/celerybeat-schedule
 
 # static files
 */static/*/icons
@@ -17,6 +18,10 @@ userprofile/management/commands
 
 # media files
 media
+
+# db
+
+ch_shop_data_only.sql
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

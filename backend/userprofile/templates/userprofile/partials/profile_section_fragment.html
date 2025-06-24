@@ -1,0 +1,31 @@
+<div class="profile-info" id="profile-section">
+  <div class="profile-details">
+    <h4>Profile Information</h4>
+    
+    <div class="profile-item">
+      <strong>Address:</strong> 
+      <span>{{ profile.address|default:"Not specified" }}</span>
+    </div>
+    
+    <div class="profile-item">
+      <strong>Phone:</strong> 
+      <span>{{ profile.phone_number|default:"Not specified" }}</span>
+    </div>
+    
+    <div class="profile-item">
+      <strong>Photo:</strong>
+      {% if profile.userphoto %}
+        <img src="{{ profile.avatar_small }}" 
+             alt="Profile Photo" 
+             class="profile_photo" 
+             loading="lazy">
+      {% else %}
+        <span>No photo uploaded</span>
+      {% endif %}
+    </div>
+    
+    <button class="product-card__button" onclick="openProfileModal()">
+      Edit Profile
+    </button>
+  </div>
+</div>

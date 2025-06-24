@@ -1,0 +1,108 @@
+{% extends 'core/base.html' %} 
+{% load static %} 
+{% block content %}
+<div class="product-container">
+  <div class="product-main-section">
+    <div class="product-image-section">
+      {% if prod.photo %}
+      <img src="{{ prod.thumbnail_large }}" 
+          alt="{{ prod.title }}"
+          class="product-main-image"
+      >
+      {% else %}
+      <img
+        src="{% static 'store/images/favicon-32x32.png' %}"
+        alt="{{ prod.title }}"
+        class="product-image"
+      />
+      {% endif %}
+    </div>
+
+    <div class="product-info-section">
+      <a href="{{ prod.cat.get_absolute_url }}" class="product-category"
+        >{{ prod.cat.name }}</a
+      >
+
+      <h1 class="product-title">{{ prod.title }}</h1>
+
+      <div class="product-details">
+        <div class="product-amount">{{ prod.amount }} {{ prod.unit }}</div>
+
+        <div class="product-price">${{ prod.price }}</div>
+      </div>
+
+      <div class="add-to-cart-section">
+        {% if prod.is_in_stock %}
+        <form
+          method="post"
+          action="{% url 'add_to_cart' prod.id %}"
+          id="cart-form"
+        >
+          {% csrf_token %}
+          <div class="quantity-selector">
+            <label class="quantity-label">Quantity:</label>
+
+            <input
+              type="number"
+              name="quantity"
+              id="quantity"
+              class="quantity-select"
+              min="1"
+              max="{{ prod.quantity }}"
+              value="1"
+              step="1"
+            />
+            <span class="stock-info">{{ prod.quantity }} in stock</span>
+          </div>
+          <button
+            hx-post="{% url 'add_to_cart' prod.id %}"
+            hx-target="#cart-count"
+            hx-swap="innerHTML"
+            hx-indicator="#cart-loading"
+            hx-include="[name='csrfmiddlewaretoken'], [name='quantity']"
+            class="product-card__button"
+            type="submit"
+          >
+            <img
+              src="{% static 'core/images/cart.png' %}"
+              alt="Search"
+              width="30"
+              height="30"
+            />
+
+            <span>Add to Cart</span>
+            <span id="cart-loading" class="htmx-indicator spinner"></span>
+          </button>
+        </form>
+        {% else %}
+        <button class="product-card__button disabled" disabled>
+          <span class="btn-text">Out of Stock</span>
+        </button>
+        {% endif %}
+
+        <div
+          id="add-success"
+          class="success-notification"
+          style="display: none"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M20 6L9 17L4 12"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Added to cart!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-description-section">
+    <h2 class="description-title">Product Description</h2>
+    <div class="product-description">{{ prod.content|linebreaks }}</div>
+  </div>
+</div>
+{% endblock %}

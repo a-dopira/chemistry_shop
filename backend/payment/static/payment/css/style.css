@@ -1,0 +1,401 @@
+.payment-flow-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.payment-flow-container.narrow {
+    max-width: 800px;
+}
+
+.payment-flow-container.extra-narrow {
+    max-width: 700px;
+}
+
+.payment-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.payment-content.equal-columns {
+    grid-template-columns: 1fr 1fr;
+}
+
+.payment-content.single-column {
+    grid-template-columns: 1fr;
+    justify-items: center;
+}
+
+.info-box {
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.info-box.error {
+    background: #FEF2F2;
+    border: 1px solid #FECACA;
+}
+
+.info-box.success {
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+}
+
+.info-box.neutral {
+    background: #EBF8FF;
+    border: 1px solid #BFDBFE;
+}
+
+.info-box h3 {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.info-box.error h3 {
+    color: #DC2626;
+}
+
+.info-box.success h3 {
+    color: #15803D;
+}
+
+.info-box.neutral h3 {
+    color: #1E40AF;
+}
+
+.info-box p {
+    color: #374151;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.info-box.success p {
+    text-align: center;
+}
+
+.info-box ul {
+    color: #374151;
+    padding-left: 20px;
+}
+
+.info-box li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.side-panel {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    height: fit-content;
+}
+
+.side-panel h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.summary-items,
+.order-items {
+    margin-bottom: 20px;
+}
+
+.summary-item,
+.order-item,
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.item-row {
+    padding: 15px 0;
+}
+
+.item-row:last-of-type {
+    border-bottom: none;
+    margin-bottom: 15px;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-name {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.item-quantity {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.item-price,
+.item-total {
+    font-weight: 600;
+    color: #333;
+}
+
+.item-total {
+    font-size: 1.1em;
+}
+
+.summary-total,
+.items-total {
+    padding-top: 15px;
+    border-top: 2px solid #333;
+    font-size: 1.2em;
+    text-align: right;
+}
+
+.items-total {
+    font-size: 1.2em;
+}
+
+.order-details {
+    background: #f9f9f9;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.order-details h3,
+.order-items h4 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.status-paid {
+    background: #10B981;
+}
+
+.status-processing {
+    background: #F59E0B;
+}
+
+.payment-method {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6772E5;
+    font-weight: 600;
+}
+
+.main-form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.main-form h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.payment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.payment-header h3 {
+    color: #333;
+    margin: 0;
+}
+
+.stripe-powered {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.card-element-container {
+    margin-bottom: 20px;
+}
+
+.card-element-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+#card-element {
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    transition: border-color 0.3s;
+}
+
+#card-element.StripeElement--focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+#card-element.StripeElement--invalid {
+    border-color: #dc3545;
+}
+
+#card-errors {
+    color: #dc3545;
+    margin-top: 10px;
+    font-size: 14px;
+    min-height: 20px;
+}
+
+.btn.full-width {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ffffff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .payment-flow-container {
+        padding: 10px;
+    }
+    
+    .payment-content,
+    .payment-content.equal-columns {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .payment-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .detail-row,
+    .item-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .item-row {
+        gap: 10px;
+    }
+}
