@@ -15,13 +15,14 @@ backend/core/management
 # static files
 */static/*/icons
 */static/*/images
+*/staticfiles
 
 # media files
 media
 
 # db
 
-ch_shop_data_only.sql
+ch_shop_data_only.sql/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
