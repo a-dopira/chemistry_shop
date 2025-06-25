@@ -11,6 +11,7 @@ urlpatterns = [
     path("", include("store.urls")),
     path("", include("userprofile.urls")),
     path("", include("core.urls")),
+    path("api/", include("api.urls")),
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.jwt")),
 ]
