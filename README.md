@@ -21,6 +21,7 @@
 - django 4.2
 - django-rest-framework
 - djoser
+- htmx
 - celery
 - redis
 - nginx
