@@ -42,28 +42,16 @@ class IngredientsList(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        
         cat_slug = self.kwargs.get("cat_slug")
         if cat_slug:
-            try:
-                category = Category.objects.get(slug=cat_slug)
-                context.update(
-                    {
-                        "category": category,
-                        "cat_selected": category.pk,
-                        "title": f"{category.name} | Categories",
-                        "is_category": True,
-                    }
-                )
-            except Category.DoesNotExist:
-                raise Http404("Category does not exist")
-        else:
-            context.update(
-                {
-                    "cat_selected": 0,
-                    "title": "The Hag's Cure",
-                }
-            )
+            category = context["products"][0].cat
+            context.update({
+                "category": category,
+                "cat_selected": category.pk,
+                "title": f"{category.name} | Categories",
+                "is_category": True,
+            })
 
         if self.request.htmx:
             current_page = int(self.request.GET.get("page", 1))
@@ -90,11 +78,10 @@ class FormSearch(ListView):
     paginate_by = 3
 
     def get_paginate_by(self, queryset):
-        # turn off pagination for dropdown
         if self.request.htmx and "search-results" in str(
             self.request.headers.get("HX-Target", "")
         ):
-            return None
+            return 2
         return 3
 
     def get_queryset(self):
@@ -115,6 +102,8 @@ class FormSearch(ListView):
         context = super().get_context_data(**kwargs)
         query = self.request.GET.get("search", "")
 
+        paginator = context.get("paginator")
+
         if not query and hasattr(self.request, "session"):
             query = self.request.session.get("last_search_query", "")
 
@@ -133,7 +122,7 @@ class FormSearch(ListView):
         if self.request.htmx:
             current_page = int(self.request.GET.get("page", 1))
             context["total_shown"] = current_page * self.paginate_by
-            context["total_items"] = self.get_queryset().count()
+            context["total_items"] = paginator.count
 
         return context
 
