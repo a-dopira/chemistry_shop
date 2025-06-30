@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.utils import timezone
 from django.contrib import messages
 from django.http import HttpResponse
@@ -156,16 +157,24 @@ class RegistrationPage(CreateView):
         context["title"] = "Registration"
         return context
 
+    @transaction.atomic
     def form_valid(self, form):
         user = form.save(commit=False)
         user.is_active = False
         user.save()
 
-        try:
-            activation_email = ActivationEmail(self.request, {"user": user})
-            activation_email.send([user.email])
-        except Exception as e:
-            raise Exception(f"Error sending activation email: {e}")
+        UserProfile.objects.create(user=user)
+
+        user_email = user.email
+        user_id = user.id
+        request = self.request
+
+        transaction.on_commit(
+            lambda: ActivationEmail(
+                request, 
+                {"user": User.objects.get(id=user_id)}
+            ).send([user_email])
+        )
 
         if self.request.headers.get("HX-Request"):
             return HttpResponse(headers={"HX-Redirect": str(self.success_url)})

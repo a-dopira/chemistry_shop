@@ -102,8 +102,6 @@ class FormSearch(ListView):
         context = super().get_context_data(**kwargs)
         query = self.request.GET.get("search", "")
 
-        paginator = context.get("paginator")
-
         if not query and hasattr(self.request, "session"):
             query = self.request.session.get("last_search_query", "")
 
@@ -118,11 +116,6 @@ class FormSearch(ListView):
                 "is_search": True,
             }
         )
-
-        if self.request.htmx:
-            current_page = int(self.request.GET.get("page", 1))
-            context["total_shown"] = current_page * self.paginate_by
-            context["total_items"] = paginator.count
 
         return context
 
