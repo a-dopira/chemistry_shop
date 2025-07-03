@@ -56,7 +56,7 @@ STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret
 
 setup database:
 ```bash
-bashdocker-compose exec backend python manage.py migrate
+docker-compose exec backend python manage.py migrate
 docker-compose exec backend python manage.py createsuperuser
 ```
 browse to localhost
