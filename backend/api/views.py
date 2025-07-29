@@ -12,7 +12,7 @@ from .filters import IngredientFilter
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
-    queryset = Ingredient.objects.all().order_by("-time_create")
+    queryset = Ingredient.objects.all().order_by("-created_at")
     filter_backends = [DjangoFilterBackend]
     filterset_class = IngredientFilter
 

@@ -40,12 +40,12 @@ class IngredientAdmin(admin.ModelAdmin):
         "is_in_stock",
         "photo_preview",
     ]
-    list_filter = ["is_published", "cat", "unit", "time_create"]
+    list_filter = ["is_published", "cat", "unit", "created_at"]
     search_fields = ["title", "content"]
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = [
-        "time_create",
-        "time_update",
+        "created_at",
+        "updated_at",
         "photo_preview",
         "amount_with_unit",
     ]
@@ -63,7 +63,7 @@ class IngredientAdmin(admin.ModelAdmin):
         ("Status", {"fields": ("is_published",)}),
         (
             "Timestamps",
-            {"fields": ("time_create", "time_update"), "classes": ("collapse",)},
+            {"fields": ("created_at", "updated_at"), "classes": ("collapse",)},
         ),
     )
 

@@ -9,11 +9,18 @@ from core.mixins import ImageCacheMixin
 User = get_user_model()
 
 
-class Category(models.Model):
+class BaseTimeStamptedModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_created=True)
+
+    class Meta:
+        abstract = True
+
+
+class Category(BaseTimeStamptedModel):
     name = models.CharField(max_length=255, db_index=True, verbose_name="Category")
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
@@ -32,7 +39,7 @@ class Category(models.Model):
         ordering = ["name"]
 
 
-class Ingredient(ImageCacheMixin, models.Model):
+class Ingredient(ImageCacheMixin, BaseTimeStamptedModel):
 
     UNIT_CHOICES = (
         ("kg", "kg"),
@@ -65,8 +72,6 @@ class Ingredient(ImageCacheMixin, models.Model):
         null=True,
         blank=True,
     )
-    time_create = models.DateTimeField(auto_now_add=True)
-    time_update = models.DateTimeField(auto_now=True)
     is_published = models.BooleanField(default=True)
     cat = models.ForeignKey(
         Category,
@@ -118,14 +123,14 @@ class Ingredient(ImageCacheMixin, models.Model):
     class Meta:
         verbose_name = "Ingredient"
         verbose_name_plural = "Ingredients"
-        ordering = ["-time_create", "title"]
+        ordering = ["-created_at", "title"]
         indexes = [
             models.Index(fields=["is_published", "cat"]),
             models.Index(fields=["price"]),
         ]
 
 
-class Order(models.Model):
+class Order(BaseTimeStamptedModel):
     STATUS_CHOICES = [
         ("pending", "Pending"),
         ("processing", "Processing"),
@@ -158,9 +163,6 @@ class Order(models.Model):
     created_by = models.ForeignKey(
         User, related_name="orders", on_delete=models.SET_NULL, null=True, blank=True
     )
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Order #{self.id} - {self.first_name} {self.last_name}"

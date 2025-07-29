@@ -12,11 +12,11 @@ class IngredientFilter(filters.FilterSet):
     max_price = filters.NumberFilter(field_name="price", lookup_expr="lte")
     in_stock = filters.BooleanFilter(method="stock_filter")
     ordering = filters.OrderingFilter(
-        fields=("title", "price", "time_create", "quantity"),
+        fields=("title", "price", "created_at", "quantity"),
         field_labels={
             "title": "Название",
             "price": "Цена",
-            "time_create": "Дата создания",
+            "created_at": "Дата создания",
             "quantity": "Количество",
         },
     )

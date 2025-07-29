@@ -29,8 +29,8 @@ class IngredientSerializer(serializers.ModelSerializer):
             "quantity",
             "unit",
             "amount",
-            "time_create",
-            "time_update",
+            "created_at",
+            "updated_at",
             "is_published",
             "cat",
             "cat_id",
@@ -39,7 +39,7 @@ class IngredientSerializer(serializers.ModelSerializer):
             "thumbnail_large",
             "is_in_stock",
         ]
-        read_only_fields = ["slug", "time_create", "time_update"]
+        read_only_fields = ["slug", "created_at", "updated_at"]
 
 
 class IngredientListSerializer(serializers.ModelSerializer):

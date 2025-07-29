@@ -3,6 +3,7 @@ import hashlib
 from io import BytesIO
 from PIL import Image
 from django.core.cache import cache
+from django.conf import settings
 import redis
 
 
@@ -19,7 +20,7 @@ class ImageCacheService:
     def __init__(self):
         self.redis_client = None
         try:
-            self.redis_client = redis.Redis(host="127.0.0.1", port=6379, db=1)
+            self.redis_client = redis.from_url(settings.REDIS_URL)
         except Exception:
             raise Exception("Redis connection failed")
 

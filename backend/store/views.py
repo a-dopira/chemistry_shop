@@ -1,8 +1,8 @@
 from django.db.models import Q
-from django.http import HttpResponseNotFound, Http404
+from django.http import HttpResponseNotFound
 from django.views.generic import ListView, DetailView
 
-from .models import Category, Ingredient
+from .models import Ingredient
 
 
 class SingleProduct(DetailView):
@@ -75,7 +75,6 @@ class FormSearch(ListView):
     model = Ingredient
     template_name = "store/showcase.html"
     context_object_name = "products"
-    paginate_by = 3
 
     def get_paginate_by(self, queryset):
         if self.request.htmx and "search-results" in str(

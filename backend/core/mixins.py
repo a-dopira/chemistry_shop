@@ -15,7 +15,7 @@ class ImageCacheMixin(models.Model):
         if not image_field:
             return None
 
-        updated_at = getattr(self, "time_update", None) or getattr(
+        updated_at = getattr(self, "updated_at", None) or getattr(
             self, "updated_at", None
         )
 
